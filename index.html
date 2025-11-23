@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Savera Club - NMMS Quiz Portal</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React + ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: radial-gradient(circle at top, #1e293b, #020617 60%);
+            color: white;
+            font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        #root {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65);
+        }
+
+        .glass-card,
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+        }
+
+        .glow-text {
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            transition: 0.25s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px rgba(37, 99, 235, 0.55);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvas-container"></div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        /* ------------------ ICONS ------------------ */
+        const Icons = {
+            Clock: () => (
+                <svg width="22" height="22" stroke="currentColor" fill="none" strokeWidth="2">
+                    <circle cx="11" cy="11" r="9"></circle>
+                    <polyline points="11 5 11 11 15 13"></polyline>
+                </svg>
+            ),
+            Check: () => (
+                <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            ),
+            X: () => (
+                <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            ),
+            Award: () => (
+                <svg width="40" height="40" stroke="currentColor" fill="none" strokeWidth="2">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8 14 7 23 12 20 17 23 16 14"></polyline>
+                </svg>
+            ),
+            User: () => (
+                <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2">
+                    <path d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            ),
+            Brain: () => (
+                <svg width="26" height="26" stroke="currentColor" fill="none" strokeWidth="2">
+                    <path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-4.96.44 2.5 2.5 0 01-2.96-3.08 3 3 0 01-.34-5.58 2.5 2.5 0 011.32-4.24 2.5 2.5 0 011.98-3A2.5 2.5 0 019.5 2z" />
+                    <path d="M14.5 2A2.5 2.5 0 0012 4.5v15a2.5 2.5 0 004.96.44 2.5 2.5 0 002.96-3.08 3 3 0 00.34-5.58 2.5 2.5 0 00-1.32-4.24 2.5 2.5 0 00-1.98-3A2.5 2.5 0 0014.5 2z" />
+                </svg>
+            )
+        };
+
+        /* ------------------ 3D BACKGROUND ------------------ */
+        const Background3D = () => {
+            useEffect(() => {
+                const container = document.getElementById("canvas-container");
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(
+                    75,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    1000
+                );
+                const renderer = new THREE.WebGLRenderer({
+                    alpha: true,
+                    antialias: true
+                });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                container.appendChild(renderer.domElement);
+
+                const geometry = new THREE.IcosahedronGeometry(2, 2);
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0x60a5fa,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.15
+                });
+                const sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+
+                const particlesGeometry = new THREE.BufferGeometry();
+                const particlesCount = 700;
+                const positions = new Float32Array(particlesCount * 3);
+
+                for (let i = 0; i < particlesCount * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 15;
+                }
+
+                particlesGeometry.setAttribute(
+                    "position",
+                    new THREE.BufferAttribute(positions, 3)
+                );
+
+                const particlesMaterial = new THREE.PointsMaterial({
+                    size: 0.02,
+                    color: 0xf97316,
+                    transparent: true,
+                    opacity: 0.6
+                });
+
+                const particles = new THREE.Points(
+                    particlesGeometry,
+                    particlesMaterial
+                );
+                scene.add(particles);
+
+                camera.position.z = 5;
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+
+                    sphere.rotation.x += 0.001;
+                    sphere.rotation.y += 0.001;
+
+                    particles.rotation.y -= 0.0005;
+                    particles.rotation.x -= 0.0002;
+
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+
+                const onResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                };
+
+                window.addEventListener("resize", onResize);
+
+                return () => {
+                    window.removeEventListener("resize", onResize);
+                    container.removeChild(renderer.domElement);
+                };
+            }, []);
+
+            return null;
+        };
+
+        /* ------------------ QUESTION BANK (150, BILINGUAL) ------------------ */
+        const buildQuestionBank = () => {
+            const q = [];
+
+            // Helper to push bilingual questions
+            const add = ({ en, hi, options, correct, explanation }) => {
+                q.push({
+                    q: `${en}\n\nहिन्दी:\n${hi}`,
+                    options,
+                    correct,
+                    explanation
+                });
+            };
+
+            /* ---------- GROUP 1: Static Logic & Reasoning (10 questions) ---------- */
+
+            add({
+                en: "Statement: All roads are waters. Some waters are boats.\nConclusions:\nI. Some boats are roads.\nII. All waters are boats.\nWhich conclusion(s) follow?",
+                hi: "कथन: सभी सड़कें जल हैं। कुछ जल नाव हैं।\nनिष्कर्ष:\nI. कुछ नावें सड़कें हैं।\nII. सभी जल नाव हैं।\nकौन-सा/से निष्कर्ष सही है/हैं?",
+                options: ["Only I follows", "Only II follows", "Either I or II follows", "Neither I nor II follows"],
+                correct: 3,
+                explanation: "No definite overlap between boats and roads is guaranteed."
+            });
+
+            add({
+                en: "If 'P + Q' means P is the father of Q; 'P - Q' means P is the wife of Q; 'P × Q' means P is the brother of Q.\nWhich expression means A is the maternal uncle of D?",
+                hi: "यदि 'P + Q' का अर्थ है P, Q का पिता है; 'P - Q' का अर्थ है P, Q की पत्नी है; 'P × Q' का अर्थ है P, Q का भाई है।\nकौन-सा व्यंजक दर्शाता है कि A, D का मामा है?",
+                options: ["A × B - C + D", "D × C - B × A", "A × C + B - D", "A - C + B × D"],
+                correct: 0,
+                explanation: "A is brother of B; B is wife of C; C is father of D ⇒ A is maternal uncle of D."
+            });
+
+            add({
+                en: "In a certain code, 'COMPUTRONE' is written as 'PMOCTUENOR'. How will 'ADVANTAGES' be written in that code?",
+                hi: "एक कूट भाषा में 'COMPUTRONE' को 'PMOCTUENOR' लिखा जाता है। उसी नियम से 'ADVANTAGES' कैसे लिखा जाएगा?",
+                options: ["ADVANSEGAS", "AVDATNSEGA", "AVDASEGATN", "NAVDASSEGA"],
+                correct: 1,
+                explanation: "First half reversed; second half reversed."
+            });
+
+            add({
+                en: "Select the related number from the alternatives: 123 : 36 :: 221 : ?",
+                hi: "विकल्पों में से संबंधित संख्या चुनिए: 123 : 36 :: 221 : ?",
+                options: ["52", "69", "72", "25"],
+                correct: 3,
+                explanation: "(1+2+3)² = 36; (2+2+1)² = 25."
+            });
+
+            add({
+                en: "Pointing to a photograph, a man said, 'I have no brother or sister, but that man’s father is my father’s son.' Whose photograph was it?",
+                hi: "एक फ़ोटो की ओर इशारा कर एक आदमी बोला, 'मेरे न तो भाई हैं न बहन, पर उस व्यक्ति के पिता मेरे पिता का पुत्र है।' फ़ोटो किसका है?",
+                options: ["His own", "His son", "His father", "His nephew"],
+                correct: 1,
+                explanation: "‘My father’s son’ = the speaker himself; so the man in the photo is his son."
+            });
+
+            add({
+                en: "If Z = 52 and ACT = 48, then BAT = ?",
+                hi: "यदि Z = 52 तथा ACT = 48, तो BAT = ?",
+                options: ["39", "41", "44", "46"],
+                correct: 3,
+                explanation: "Sum of letters × 2. BAT=(2+1+20)×2=46."
+            });
+
+            add({
+                en: "What is the angle between the hour and minute hands at 4:20?",
+                hi: "4 बजकर 20 मिनट पर घड़ी की घंटे तथा मिनट की सूई के बीच कोण कितना होगा?",
+                options: ["0°", "5°", "10°", "20°"],
+                correct: 2,
+                explanation: "Minute hand at 120°; hour hand at 130° ⇒ 10°."
+            });
+
+            add({
+                en: "Some books are pens. No pen is a pencil.\nConclusion: Some books are not pencils. Is it true?",
+                hi: "कुछ पुस्तकें पेन हैं। कोई पेन पेंसिल नहीं है।\nनिष्कर्ष: कुछ पुस्तकें पेंसिल नहीं हैं। क्या यह सत्य है?",
+                options: ["Definitely true", "Definitely false", "Either true or false", "Cannot be decided"],
+                correct: 0,
+                explanation: "Books that are pens cannot be pencils."
+            });
+
+            add({
+                en: "All cars are vehicles. No vehicle is red.\nConclusion: No car is red. Is the conclusion correct?",
+                hi: "सभी कारें वाहन हैं। कोई वाहन लाल नहीं है।\nनिष्कर्ष: कोई कार लाल नहीं है। क्या निष्कर्ष सही है?",
+                options: ["Yes, definitely", "No, definitely not", "Either yes or no", "Cannot be decided"],
+                correct: 0,
+                explanation: "Car ⊂ Vehicle and no vehicle is red."
+            });
+
+            add({
+                en: "Some boys are tall. Some boys are short.\nConclusion: All boys are tall. Is it correct?",
+                hi: "कुछ लड़के लंबे हैं। कुछ लड़के छोटे हैं।\nनिष्कर्ष: सभी लड़के लंबे हैं। क्या यह सही है?",
+                options: ["Yes", "No", "Either yes or no", "Cannot be decided"],
+                correct: 1,
+                explanation: "Only “some” are tall."
+            });
+
+
+            /* ---------- GROUP 2: Analogy (20 questions) ---------- */
+
+            const analogyData = [
+                {
+                    en: "Book : Reading :: Knife : ?",
+                    hi: "पुस्तक : पढ़ना :: चाकू : ?",
+                    options: ["Cutting", "Writing", "Drawing", "Folding"],
+                    correct: 0,
+                    explanation: "Knife is used for cutting."
+                },
+                {
+                    en: "Doctor : Hospital :: Teacher : ?",
+                    hi: "डॉक्टर : अस्पताल :: शिक्षक : ?",
+                    options: ["School", "Court", "Bank", "Office"],
+                    correct: 0,
+                    explanation: "Teacher works in a school."
+                },
+                {
+                    en: "Eye : See :: Ear : ?",
+                    hi: "आंख : देखना :: कान : ?",
+                    options: ["Smell", "Hear", "Taste", "Touch"],
+                    correct: 1,
+                    explanation: "Ear is used to hear."
+                },
+                {
+                    en: "Lion : Forest :: Fish : ?",
+                    hi: "शेर : जंगल :: मछली : ?",
+                    options: ["Sky", "Water", "Desert", "Mountain"],
+                    correct: 1,
+                    explanation: "Fish lives in water."
+                },
+                {
+                    en: "Pen : Ink :: Car : ?",
+                    hi: "कलम : स्याही :: कार : ?",
+                    options: ["Wheel", "Fuel", "Seat", "Horn"],
+                    correct: 1,
+                    explanation: "Car runs on fuel."
+                },
+                {
+                    en: "Bird : Wing :: Car : ?",
+                    hi: "पक्षी : पंख :: कार : ?",
+                    options: ["Wheel", "Mirror", "Seat", "Engine"],
+                    correct: 0,
+                    explanation: "Car moves using wheels."
+                },
+                {
+                    en: "River : Flow :: Road : ?",
+                    hi: "नदी : बहना :: सड़क : ?",
+                    options: ["Drive", "Stand", "Fly", "Swim"],
+                    correct: 0,
+                    explanation: "Road is used to drive."
+                },
+                {
+                    en: "Milk : White :: Blood : ?",
+                    hi: "दूध : सफेद :: रक्त : ?",
+                    options: ["Blue", "Red", "Green", "Yellow"],
+                    correct: 1,
+                    explanation: "Blood is red."
+                },
+                {
+                    en: "Dog : Bark :: Cat : ?",
+                    hi: "कुत्ता : भौंकना :: बिल्ली : ?",
+                    options: ["Roar", "Meow", "Buzz", "Growl"],
+                    correct: 1,
+                    explanation: "Cat meows."
+                },
+                {
+                    en: "Fire : Hot :: Ice : ?",
+                    hi: "आग : गर्म :: बर्फ : ?",
+                    options: ["Soft", "Cold", "Hard", "Sticky"],
+                    correct: 1,
+                    explanation: "Ice is cold."
+                },
+                {
+                    en: "Clock : Time :: Thermometer : ?",
+                    hi: "घड़ी : समय :: थर्मामीटर : ?",
+                    options: ["Heat", "Temperature", "Speed", "Pressure"],
+                    correct: 1,
+                    explanation: "Thermometer measures temperature."
+                },
+                {
+                    en: "Ship : Sea :: Aeroplane : ?",
+                    hi: "जहाज़ : समुद्र :: हवाई जहाज़ : ?",
+                    options: ["Sky", "Road", "River", "Forest"],
+                    correct: 0,
+                    explanation: "Aeroplane flies in the sky."
+                },
+                {
+                    en: "Key : Lock :: Password : ?",
+                    hi: "चाबी : ताला :: पासवर्ड : ?",
+                    options: ["File", "Folder", "Account", "System"],
+                    correct: 2,
+                    explanation: "Password opens an account."
+                },
+                {
+                    en: "Seed : Plant :: Child : ?",
+                    hi: "बीज : पौधा :: बच्चा : ?",
+                    options: ["Adult", "Tree", "Flower", "Toy"],
+                    correct: 0,
+                    explanation: "Child grows to become an adult."
+                },
+                {
+                    en: "Heart : Pump :: Lungs : ?",
+                    hi: "हृदय : पम्प :: फेफड़े : ?",
+                    options: ["Filter air", "Store food", "Produce sound", "Store blood"],
+                    correct: 0,
+                    explanation: "Lungs filter air."
+                },
+                {
+                    en: "Rain : Umbrella :: Sun : ?",
+                    hi: "बारिश : छाता :: सूरज : ?",
+                    options: ["Torch", "Sunglasses", "Boots", "Gloves"],
+                    correct: 1,
+                    explanation: "We use sunglasses in strong sunlight."
+                },
+                {
+                    en: "Teacher : Class :: Judge : ?",
+                    hi: "शिक्षक : कक्षा :: न्यायाधीश : ?",
+                    options: ["Court", "Hospital", "Bank", "Office"],
+                    correct: 0,
+                    explanation: "Judge works in a court."
+                },
+                {
+                    en: "Smile : Happiness :: Tears : ?",
+                    hi: "मुस्कान : खुशी :: आँसू : ?",
+                    options: ["Fear", "Anger", "Sadness", "Joy"],
+                    correct: 2,
+                    explanation: "Tears represent sadness."
+                },
+                {
+                    en: "Knife : Sharp :: Cotton : ?",
+                    hi: "चाकू : नुकीला :: रुई : ?",
+                    options: ["Hard", "Soft", "Heavy", "Strong"],
+                    correct: 1,
+                    explanation: "Cotton is soft."
+                },
+                {
+                    en: "Horse : Gallop :: Snake : ?",
+                    hi: "घोड़ा : दौड़ना :: साँप : ?",
+                    options: ["Crawl", "Fly", "Hop", "Jump"],
+                    correct: 0,
+                    explanation: "Snake crawls."
+                }
+            ];
+
+            analogyData.forEach(add);
+
+
+            /* ---------- GROUP 3: Odd One Out (20 questions) ---------- */
+
+            const oddData = [
+                {
+                    en: "Find the odd one out: Car, Bus, Train, School",
+                    hi: "असंगत चुनिए: कार, बस, ट्रेन, स्कूल",
+                    options: ["Car", "Bus", "Train", "School"],
+                    correct: 3,
+                    explanation: "School is not a vehicle."
+                },
+                {
+                    en: "Find the odd one out: Rose, Lotus, Mango, Lily",
+                    hi: "असंगत चुनिए: गुलाब, कमल, आम, कुमुदिनी",
+                    options: ["Rose", "Lotus", "Mango", "Lily"],
+                    correct: 2,
+                    explanation: "Mango is a fruit; others are flowers."
+                },
+                {
+                    en: "Find the odd one out: Dog, Cat, Cow, Chair",
+                    hi: "असंगत चुनिए: कुत्ता, बिल्ली, गाय, कुर्सी",
+                    options: ["Dog", "Cat", "Cow", "Chair"],
+                    correct: 3,
+                    explanation: "Chair is not an animal."
+                },
+                {
+                    en: "Find the odd one out: Pen, Pencil, Eraser, Bottle",
+                    hi: "असंगत चुनिए: पेन, पेंसिल, रबर, बोतल",
+                    options: ["Pen", "Pencil", "Eraser", "Bottle"],
+                    correct: 3,
+                    explanation: "Bottle is not a stationery item."
+                },
+                {
+                    en: "Find the odd one out: Apple, Banana, Grapes, Potato",
+                    hi: "असंगत चुनिए: सेब, केला, अंगूर, आलू",
+                    options: ["Apple", "Banana", "Grapes", "Potato"],
+                    correct: 3,
+                    explanation: "Potato is a vegetable; others are fruits."
+                },
+                {
+                    en: "Find the odd one out: Table, Chair, Bench, Radio",
+                    hi: "असंगत चुनिए: मेज़, कुर्सी, बेंच, रेडियो",
+                    options: ["Table", "Chair", "Bench", "Radio"],
+                    correct: 3,
+                    explanation: "Radio is not a furniture item."
+                },
+                {
+                    en: "Find the odd one out: Red, Black, White, Wood",
+                    hi: "असंगत चुनिए: लाल, काला, सफेद, लकड़ी",
+                    options: ["Red", "Black", "White", "Wood"],
+                    correct: 3,
+                    explanation: "Wood is a material; others are colours."
+                },
+                {
+                    en: "Find the odd one out: Foot, Hand, Nose, Book",
+                    hi: "असंगत चुनिए: पैर, हाथ, नाक, किताब",
+                    options: ["Foot", "Hand", "Nose", "Book"],
+                    correct: 3,
+                    explanation: "Book is not a body part."
+                },
+                {
+                    en: "Find the odd one out: Monday, Friday, Month, Sunday",
+                    hi: "असंगत चुनिए: सोमवार, शुक्रवार, महीना, रविवार",
+                    options: ["Monday", "Friday", "Month", "Sunday"],
+                    correct: 2,
+                    explanation: "Month is not a day of the week."
+                },
+                {
+                    en: "Find the odd one out: Circle, Square, Triangle, Apple",
+                    hi: "असंगत चुनिए: वृत्त, वर्ग, त्रिभुज, सेब",
+                    options: ["Circle", "Square", "Triangle", "Apple"],
+                    correct: 3,
+                    explanation: "Apple is not a geometric shape."
+                },
+                {
+                    en: "Find the odd one out: Carrot, Tomato, Potato, Rose",
+                    hi: "असंगत चुनिए: गाजर, टमाटर, आलू, गुलाब",
+                    options: ["Carrot", "Tomato", "Potato", "Rose"],
+                    correct: 3,
+                    explanation: "Rose is a flower."
+                },
+                {
+                    en: "Find the odd one out: Ear, Eye, Nose, Bag",
+                    hi: "असंगत चुनिए: कान, आँख, नाक, बैग",
+                    options: ["Ear", "Eye", "Nose", "Bag"],
+                    correct: 3,
+                    explanation: "Bag is not a body part."
+                },
+                {
+                    en: "Find the odd one out: Milk, Butter, Curd, Rice",
+                    hi: "असंगत चुनिए: दूध, मक्खन, दही, चावल",
+                    options: ["Milk", "Butter", "Curd", "Rice"],
+                    correct: 3,
+                    explanation: "Rice is not a milk product."
+                },
+                {
+                    en: "Find the odd one out: River, Lake, Ocean, Tree",
+                    hi: "असंगत चुनिए: नदी, झील, महासागर, पेड़",
+                    options: ["River", "Lake", "Ocean", "Tree"],
+                    correct: 3,
+                    explanation: "Tree is not a water body."
+                },
+                {
+                    en: "Find the odd one out: Cow, Buffalo, Goat, Tiger",
+                    hi: "असंगत चुनिए: गाय, भैंस, बकरी, बाघ",
+                    options: ["Cow", "Buffalo", "Goat", "Tiger"],
+                    correct: 3,
+                    explanation: "Tiger is wild; others are domestic."
+                },
+                {
+                    en: "Find the odd one out: Shoes, Socks, Shirt, Cap",
+                    hi: "असंगत चुनिए: जूते, मोज़े, कमीज़, टोपी",
+                    options: ["Shoes", "Socks", "Shirt", "Cap"],
+                    correct: 2,
+                    explanation: "Shirt is clothing; others are accessories/footwear."
+                },
+                {
+                    en: "Find the odd one out: Train, Bus, Car, House",
+                    hi: "असंगत चुनिए: ट्रेन, बस, कार, मकान",
+                    options: ["Train", "Bus", "Car", "House"],
+                    correct: 3,
+                    explanation: "House is not a vehicle."
+                },
+                {
+                    en: "Find the odd one out: Oxygen, Nitrogen, Carbon, Marble",
+                    hi: "असंगत चुनिए: ऑक्सीजन, नाइट्रोजन, कार्बन, संगमरमर",
+                    options: ["Oxygen", "Nitrogen", "Carbon", "Marble"],
+                    correct: 3,
+                    explanation: "Marble is not a gas."
+                },
+                {
+                    en: "Find the odd one out: Bat, Ball, Wicket, Pillow",
+                    hi: "असंगत चुनिए: बैट, बॉल, विकेट, तकिया",
+                    options: ["Bat", "Ball", "Wicket", "Pillow"],
+                    correct: 3,
+                    explanation: "Pillow is unrelated to cricket."
+                },
+                {
+                    en: "Find the odd one out: Tiger, Lion, Leopard, Cow",
+                    hi: "असंगत चुनिए: बाघ, शेर, तेंदुआ, गाय",
+                    options: ["Tiger", "Lion", "Leopard", "Cow"],
+                    correct: 3,
+                    explanation: "Cow is domestic; others are wild cats."
+                }
+            ];
+
+            oddData.forEach(add);
+
+
+            /* ---------- GROUP 4: Number Series (20 questions) ---------- */
+
+            const seriesData = [
+                {
+                    en: "Find the next term: 2, 6, 12, 20, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 2, 6, 12, 20, ?",
+                    options: ["30", "24", "32", "28"],
+                    correct: 0,
+                    explanation: "Differences +4, +6, +8, +10 → next +12 = 30."
+                },
+                {
+                    en: "Find the next term: 5, 11, 17, 23, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 5, 11, 17, 23, ?",
+                    options: ["26", "27", "29", "31"],
+                    correct: 2,
+                    explanation: "Common difference = +6."
+                },
+                {
+                    en: "Find the next term: 3, 9, 27, 81, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 3, 9, 27, 81, ?",
+                    options: ["243", "162", "324", "100"],
+                    correct: 0,
+                    explanation: "Each term ×3."
+                },
+                {
+                    en: "Find the next term: 1, 4, 9, 16, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 1, 4, 9, 16, ?",
+                    options: ["20", "25", "24", "30"],
+                    correct: 1,
+                    explanation: "Squares of 1,2,3,4,5..."
+                },
+                {
+                    en: "Find the next term: 7, 14, 28, 56, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 7, 14, 28, 56, ?",
+                    options: ["112", "100", "96", "125"],
+                    correct: 0,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 4, 8, 16, 32, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 4, 8, 16, 32, ?",
+                    options: ["48", "64", "60", "96"],
+                    correct: 1,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 10, 13, 18, 25, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 10, 13, 18, 25, ?",
+                    options: ["30", "31", "32", "33"],
+                    correct: 3,
+                    explanation: "Differences +3, +5, +7, +? (kept as in original question)."
+                },
+                {
+                    en: "Find the next term: 9, 18, 36, 72, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 9, 18, 36, 72, ?",
+                    options: ["108", "144", "180", "200"],
+                    correct: 1,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 1, 2, 6, 24, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 1, 2, 6, 24, ?",
+                    options: ["72", "120", "48", "144"],
+                    correct: 1,
+                    explanation: "Factorials: 1!, 2!, 3!, 4!, 5!."
+                },
+                {
+                    en: "Find the next term: 12, 24, 48, 96, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 12, 24, 48, 96, ?",
+                    options: ["120", "144", "192", "168"],
+                    correct: 2,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 2, 5, 11, 23, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 2, 5, 11, 23, ?",
+                    options: ["45", "46", "47", "48"],
+                    correct: 0,
+                    explanation: "Pattern approx: ×2+1."
+                },
+                {
+                    en: "Find the next term: 15, 30, 60, 120, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 15, 30, 60, 120, ?",
+                    options: ["200", "220", "240", "250"],
+                    correct: 2,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 7, 10, 16, 28, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 7, 10, 16, 28, ?",
+                    options: ["40", "44", "36", "52"],
+                    correct: 0,
+                    explanation: "Increasing pattern (as in original)."
+                },
+                {
+                    en: "Find the next term: 5, 15, 45, 135, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 5, 15, 45, 135, ?",
+                    options: ["350", "405", "500", "300"],
+                    correct: 1,
+                    explanation: "Each term ×3."
+                },
+                {
+                    en: "Find the next term: 31, 29, 27, 25, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 31, 29, 27, 25, ?",
+                    options: ["24", "23", "21", "20"],
+                    correct: 1,
+                    explanation: "Decreasing by 2."
+                },
+                {
+                    en: "Find the next term: 4, 6, 9, 13, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 4, 6, 9, 13, ?",
+                    options: ["16", "17", "18", "21"],
+                    correct: 1,
+                    explanation: "Differences: +2, +3, +4, +5."
+                },
+                {
+                    en: "Find the next term: 100, 95, 85, 70, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 100, 95, 85, 70, ?",
+                    options: ["60", "55", "50", "45"],
+                    correct: 2,
+                    explanation: "Differences -5, -10, -15, -20."
+                },
+                {
+                    en: "Find the next term: 13, 17, 19, 23, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 13, 17, 19, 23, ?",
+                    options: ["25", "27", "29", "31"],
+                    correct: 2,
+                    explanation: "Prime numbers."
+                },
+                {
+                    en: "Find the next term: 2, 4, 8, 16, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 2, 4, 8, 16, ?",
+                    options: ["24", "30", "32", "64"],
+                    correct: 2,
+                    explanation: "Each term ×2."
+                },
+                {
+                    en: "Find the next term: 9, 16, 25, 36, ?",
+                    hi: "अगला पद ज्ञात कीजिए: 9, 16, 25, 36, ?",
+                    options: ["42", "44", "48", "49"],
+                    correct: 3,
+                    explanation: "Squares: 3², 4², 5², 6², 7²."
+                }
+            ];
+
+            seriesData.forEach(add);
+
+
+            /* ---------- GROUP 5: Direction Sense (20 questions) ---------- */
+
+            const dirBase = [
+                { a: 10, b: 5 }, { a: 12, b: 7 }, { a: 8,  b: 4 }, { a: 15, b: 9 },
+                { a: 20, b: 6 }, { a: 11, b: 3 }, { a: 13, b: 8 }, { a: 9,  b: 2 },
+                { a: 14, b: 5 }, { a: 16, b: 10 }, { a: 7,  b: 3 }, { a: 18, b: 6 },
+                { a: 6,  b: 4 }, { a: 21, b: 9 }, { a: 19, b: 5 }, { a: 10, b: 7 },
+                { a: 12, b: 4 }, { a: 17, b: 11 }, { a: 9,  b: 5 }, { a: 8,  b: 6 }
+            ];
+
+            dirBase.forEach(({ a, b }) => {
+                add({
+                    en: `A man walks ${a} m north, then turns left and walks ${b} m, then turns left again and walks ${a} m. How far is he from the starting point?`,
+                    hi: `एक व्यक्ति ${a} मीटर उत्तर चलता है, फिर बाएँ मुड़कर ${b} मीटर चलता है, फिर फिर से बाएँ मुड़कर ${a} मीटर चलता है। वह प्रारंभिक बिंदु से कितनी दूरी पर है?`,
+                    options: [`${a} m`, `${b} m`, "0 m", `${a + b} m`],
+                    correct: 1,
+                    explanation: "Vertical distance cancels; he ends b meters left."
+                });
+            });
+
+
+            /* ---------- GROUP 6: Blood Relation (20 questions) ---------- */
+
+            const bloodData = [
+                {
+                    en: "A says: 'He is the son of my mother's daughter.' Who is he to A?",
+                    hi: "A कहता है: 'वह मेरी माँ की बेटी का बेटा है।' वह A का कौन है?",
+                    options: ["Brother", "Nephew", "Cousin", "Uncle"],
+                    correct: 1,
+                    explanation: "Mother's daughter = sister; her son = nephew."
+                },
+                {
+                    en: "Pointing to a boy, A says: 'He is the husband of my only daughter.' Who is he to A?",
+                    hi: "एक लड़के की ओर इशारा कर A कहता है: 'वह मेरी इकलौती बेटी का पति है।' वह A का कौन है?",
+                    options: ["Son", "Son-in-law", "Nephew", "Brother-in-law"],
+                    correct: 1,
+                    explanation: "Husband of daughter = son-in-law."
+                },
+                {
+                    en: "Pointing to a girl A says: 'She is the daughter of my grandfather’s only son.' Who is she to A?",
+                    hi: "एक लड़की की ओर इशारा कर A कहता है: 'वह मेरे दादा के इकलौते बेटे की बेटी है।' वह A की कौन है?",
+                    options: ["Sister", "Cousin", "Aunt", "Mother"],
+                    correct: 0,
+                    explanation: "Grandfather’s only son = father; father’s daughter = sister."
+                },
+                {
+                    en: "A says: 'My mother-in-law’s only grandson is B.' B is A’s?",
+                    hi: "A कहता है: 'मेरी सास का इकलौता पोता B है।' B, A का कौन है?",
+                    options: ["Son", "Brother", "Cousin", "Uncle"],
+                    correct: 0,
+                    explanation: "Mother-in-law’s only grandson = A’s son."
+                },
+                {
+                    en: "Pointing to a lady, A said: 'She is the wife of my father’s son.' Who is she to A?",
+                    hi: "A कहता है: 'वह मेरे पिता के बेटे की पत्नी है।' वह A की कौन है?",
+                    options: ["Mother", "Sister", "Sister-in-law", "Aunt"],
+                    correct: 2,
+                    explanation: "Father’s son = A's brother; his wife = sister-in-law."
+                },
+                {
+                    en: "A says: 'My wife’s brother’s only sister is C.' Who is C to A?",
+                    hi: "A कहता है: 'मेरी पत्नी के भाई की इकलौती बहन C है।' C, A की कौन है?",
+                    options: ["Wife", "Sister", "Sister-in-law", "Cousin"],
+                    correct: 0,
+                    explanation: "Only sister of wife's brother = wife."
+                },
+                {
+                    en: "A says: 'He is my father’s wife’s brother.' The man is A’s?",
+                    hi: "A कहता है: 'वह मेरे पिता की पत्नी का भाई है।' वह व्यक्ति A का कौन है?",
+                    options: ["Uncle", "Cousin", "Brother-in-law", "Nephew"],
+                    correct: 0,
+                    explanation: "Father’s wife = mother; her brother = maternal uncle."
+                },
+                {
+                    en: "Pointing to a woman, A says: 'She is my mother’s brother’s daughter.' She is A’s?",
+                    hi: "A कहता है: 'वह मेरी माँ के भाई की बेटी है।' वह A की कौन है?",
+                    options: ["Sister", "Cousin", "Aunt", "Grandmother"],
+                    correct: 1,
+                    explanation: "Mother’s brother’s daughter = cousin."
+                },
+                {
+                    en: "A says: 'My son’s daughter is B.' B is A’s?",
+                    hi: "A कहता है: 'मेरे बेटे की बेटी B है।' B, A की कौन है?",
+                    options: ["Daughter", "Niece", "Granddaughter", "Cousin"],
+                    correct: 2,
+                    explanation: "Son’s daughter = granddaughter."
+                },
+                {
+                    en: "A says: 'The boy is the son of my father’s sister.' The boy is A’s?",
+                    hi: "A कहता है: 'वह लड़का मेरे पिता की बहन का बेटा है।' वह A का कौन है?",
+                    options: ["Brother", "Cousin", "Uncle", "Friend"],
+                    correct: 1,
+                    explanation: "Father’s sister’s son = cousin."
+                },
+                {
+                    en: "A says: 'B is the son of my mother’s only son.' How is B related to A?",
+                    hi: "A कहता है: 'B मेरी माँ के इकलौते बेटे का बेटा है।' B, A का कौन है?",
+                    options: ["Son", "Grandson", "Nephew", "Brother"],
+                    correct: 0,
+                    explanation: "Mother’s only son = A himself → B = son."
+                },
+                {
+                    en: "Pointing to a man A said: 'His mother is the only daughter of my mother.' Who is the man?",
+                    hi: "A कहता है: 'उसकी माँ, मेरी माँ की इकलौती बेटी है।' वह व्यक्ति कौन है?",
+                    options: ["Brother", "Cousin", "Nephew", "Son"],
+                    correct: 2,
+                    explanation: "Mother’s only daughter = sister; sister’s son = nephew."
+                },
+                {
+                    en: "A said: 'That girl is the daughter of my son.' How is that girl related to A?",
+                    hi: "A ने कहा: 'वह लड़की मेरे बेटे की बेटी है।' वह A की कौन है?",
+                    options: ["Daughter", "Granddaughter", "Niece", "Sister"],
+                    correct: 1,
+                    explanation: "Son’s daughter = granddaughter."
+                },
+                {
+                    en: "A says: 'This boy is my wife’s brother’s son.' This boy is A’s?",
+                    hi: "A कहता है: 'यह लड़का मेरी पत्नी के भाई का बेटा है।' यह A का कौन है?",
+                    options: ["Nephew", "Brother-in-law", "Cousin", "Uncle"],
+                    correct: 0,
+                    explanation: "Wife’s brother’s son = nephew."
+                },
+                {
+                    en: "A says: 'She is my father’s mother.' She is A’s?",
+                    hi: "A कहता है: 'वह मेरे पिता की माँ है।' वह A की कौन है?",
+                    options: ["Mother", "Grandmother", "Aunt", "Sister"],
+                    correct: 1,
+                    explanation: "Father's mother = grandmother."
+                },
+                {
+                    en: "A says: 'He is the father of my mother.' He is A’s?",
+                    hi: "A कहता है: 'वह मेरी माँ का पिता है।' वह A का कौन है?",
+                    options: ["Father", "Grandfather", "Uncle", "Brother"],
+                    correct: 1,
+                    explanation: "Mother’s father = grandfather."
+                },
+                {
+                    en: "A says: 'She is the wife of my mother’s brother.' She is A’s?",
+                    hi: "A कहता है: 'वह मेरी माँ के भाई की पत्नी है।' वह A की कौन है?",
+                    options: ["Aunt", "Sister", "Grandmother", "Cousin"],
+                    correct: 0,
+                    explanation: "Mother’s brother’s wife = aunt."
+                },
+                {
+                    en: "A says: 'He is the son of my father’s brother.' He is A’s?",
+                    hi: "A कहता है: 'वह मेरे पिता के भाई का बेटा है।' वह A का कौन है?",
+                    options: ["Brother", "Cousin", "Uncle", "Nephew"],
+                    correct: 1,
+                    explanation: "Father’s brother’s son = cousin."
+                },
+                {
+                    en: "A says: 'She is the daughter of my mother’s sister.' She is A’s?",
+                    hi: "A कहता है: 'वह मेरी माँ की बहन की बेटी है।' वह A की कौन है?",
+                    options: ["Sister", "Cousin", "Aunt", "Niece"],
+                    correct: 1,
+                    explanation: "Mother’s sister’s daughter = cousin."
+                },
+                {
+                    en: "A says: 'That boy is the son of my sister.' He is A’s?",
+                    hi: "A कहता है: 'वह लड़का मेरी बहन का बेटा है।' वह A का कौन है?",
+                    options: ["Nephew", "Cousin", "Uncle", "Grandson"],
+                    correct: 0,
+                    explanation: "Sister’s son = nephew."
+                }
+            ];
+
+            bloodData.forEach(add);
+
+
+            /* ---------- GROUP 7: Coding–Decoding (20 questions) ---------- */
+
+            const codingData = [
+                {
+                    en: "If CAT is written as DBU, how is DOG written?",
+                    hi: "यदि CAT को DBU लिखा जाता है, तो DOG कैसे लिखा जाएगा?",
+                    options: ["EPH", "DPH", "FQH", "EPI"],
+                    correct: 0,
+                    explanation: "Each letter shifted +1."
+                },
+                {
+                    en: "If BALL = YZOO, what is CODE?",
+                    hi: "यदि BALL = YZOO, तो CODE क्या होगा?",
+                    options: ["BNCF", "BNCD", "BNBE", "BNDD"],
+                    correct: 0,
+                    explanation: "Shift -1."
+                },
+                {
+                    en: "If APPLE = BQQMF, what is ORANGE?",
+                    hi: "यदि APPLE = BQQMF, तो ORANGE क्या होगा?",
+                    options: ["PSBOHF", "PQBOHF", "OSBQHF", "PSBPHF"],
+                    correct: 0,
+                    explanation: "Shift each letter +1."
+                },
+                {
+                    en: "If SKY = TLZ, what is FUN?",
+                    hi: "यदि SKY = TLZ, तो FUN क्या होगा?",
+                    options: ["GVO", "GUN", "GVM", "HVN"],
+                    correct: 0,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If BOY = CPZ, what is GIRL?",
+                    hi: "यदि BOY = CPZ, तो GIRL क्या होगा?",
+                    options: ["HJS M", "HJSM", "HJSN", "GISM"],
+                    correct: 1,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If EARTH = FBSUI, what is WORLD?",
+                    hi: "यदि EARTH = FBSUI, तो WORLD क्या होगा?",
+                    options: ["XPSME", "XPQME", "WPSME", "XPQNE"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                },
+                {
+                    en: "If TIGER = UJHFS, how is LION written?",
+                    hi: "यदि TIGER = UJHFS, तो LION कैसे लिखा जाएगा?",
+                    options: ["MJPO", "MJPN", "MHPN", "MNPO"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                },
+                {
+                    en: "If COLD = DPME, what is HOT?",
+                    hi: "यदि COLD = DPME, तो HOT क्या होगा?",
+                    options: ["IPU", "HNU", "HPU", "IPV"],
+                    correct: 0,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If GOAT = HPBU, then MILK = ?",
+                    hi: "यदि GOAT = HPBU, तो MILK = ?",
+                    options: ["NJML", "NJLM", "MJLM", "MJKM"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                },
+                {
+                    en: "If TREE = USEF, then WOOD = ?",
+                    hi: "यदि TREE = USEF, तो WOOD = ?",
+                    options: ["XPPE", "XPPD", "VPPE", "XPQD"],
+                    correct: 1,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If RAIN = SBJO, then SNOW = ?",
+                    hi: "यदि RAIN = SBJO, तो SNOW क्या होगा?",
+                    options: ["TOPX", "TPPX", "TOPW", "TOOX"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                },
+                {
+                    en: "If MILK = NJML, then WATER = ?",
+                    hi: "यदि MILK = NJML, तो WATER क्या होगा?",
+                    options: ["XBUFS", "XBUFS", "XBUFR", "XBUFS"],
+                    correct: 0,
+                    explanation: "+1 shift (kept simple)."
+                },
+                {
+                    en: "If HOME = IPNF, then HOUSE = ?",
+                    hi: "यदि HOME = IPNF, तो HOUSE क्या होगा?",
+                    options: ["IPVT F", "IPVTF", "IPVTF", "HPVTF"],
+                    correct: 1,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If CAT = DBU and DOG = EPH, what is RABBIT?",
+                    hi: "यदि CAT=DBU, DOG=EPH, तो RABBIT क्या होगा?",
+                    options: ["SBCD C U", "SB C CJU", "SBC C JU", "SBC C JV"],
+                    correct: 2,
+                    explanation: "Shift +1 for each letter."
+                },
+                {
+                    en: "If STAR = TUBS, what is MOON?",
+                    hi: "यदि STAR = TUBS, तो MOON क्या होगा?",
+                    options: ["NPPO", "NPP O", "NPPQ", "MPPQ"],
+                    correct: 2,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If RIVER = SJWFS, what is LAKE?",
+                    hi: "यदि RIVER = SJWFS, तो LAKE क्या होगा?",
+                    options: ["MBLF", "MBLF", "MBMF", "MBME"],
+                    correct: 0,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If TRAIN = USBJO, then BAND = ?",
+                    hi: "यदि TRAIN = USBJO, तो BAND क्या होगा?",
+                    options: ["CBOE", "CBOE", "CBOE", "DBOE"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                },
+                {
+                    en: "If QUEEN = RVFFO, then KING = ?",
+                    hi: "यदि QUEEN = RVFFO, तो KING क्या होगा?",
+                    options: ["LJOH", "LJ OH", "LJPG", "LJOI"],
+                    correct: 0,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If BLUE = CMVF, then GREEN = ?",
+                    hi: "यदि BLUE = CMVF, तो GREEN क्या होगा?",
+                    options: ["HSFFO", "HSFFO", "HSGGO", "HSFGO"],
+                    correct: 0,
+                    explanation: "+1 shift."
+                },
+                {
+                    en: "If HELLO = IFMMP, what is WORLD?",
+                    hi: "यदि HELLO=IFMMP, तो WORLD क्या होगा?",
+                    options: ["XPSME", "XPSME", "XPSNF", "VOSME"],
+                    correct: 0,
+                    explanation: "Shift +1."
+                }
+            ];
+
+            codingData.forEach(add);
+
+
+            /* ---------- GROUP 8: Calendar / Clock (10 questions) ---------- */
+
+            const calData = [
+                {
+                    en: "How many days are there in 6 weeks?",
+                    hi: "6 सप्ताह में कितने दिन होते हैं?",
+                    options: ["36", "40", "42", "48"],
+                    correct: 2,
+                    explanation: "6×7=42."
+                },
+                {
+                    en: "How many minutes are there in 5 hours?",
+                    hi: "5 घंटे में कितने मिनट होते हैं?",
+                    options: ["200", "250", "250", "300"],
+                    correct: 3,
+                    explanation: "5×60=300."
+                },
+                {
+                    en: "The day after Monday is?",
+                    hi: "सोमवार के बाद कौन-सा दिन आता है?",
+                    options: ["Sunday", "Wednesday", "Tuesday", "Friday"],
+                    correct: 2,
+                    explanation: "After Monday comes Tuesday."
+                },
+                {
+                    en: "If yesterday was Tuesday, today is?",
+                    hi: "यदि कल मंगलवार था, तो आज कौन-सा दिन है?",
+                    options: ["Monday", "Wednesday", "Friday", "Sunday"],
+                    correct: 1,
+                    explanation: "Next day = Wednesday."
+                },
+                {
+                    en: "How many hours are there in 3 days?",
+                    hi: "3 दिनों में कितने घंटे होते हैं?",
+                    options: ["72", "60", "48", "36"],
+                    correct: 0,
+                    explanation: "24×3=72."
+                },
+                {
+                    en: "How many seconds in 5 minutes?",
+                    hi: "5 मिनट में कितने सेकंड होते हैं?",
+                    options: ["300", "200", "150", "120"],
+                    correct: 0,
+                    explanation: "5×60=300 seconds."
+                },
+                {
+                    en: "The angle between hands of a clock at 3:00?",
+                    hi: "3:00 बजे घड़ी की सुइयों के बीच कोण कितना होता है?",
+                    options: ["60°", "90°", "120°", "150°"],
+                    correct: 1,
+                    explanation: "Hour at 90°."
+                },
+                {
+                    en: "How many months have 30 days?",
+                    hi: "कितने महीनों में 30 दिन होते हैं?",
+                    options: ["2", "4", "6", "9"],
+                    correct: 1,
+                    explanation: "April, June, Sept, Nov."
+                },
+                {
+                    en: "The first month of the year?",
+                    hi: "साल का पहला महीना कौन सा है?",
+                    options: ["February", "January", "March", "April"],
+                    correct: 1,
+                    explanation: "January is first month."
+                },
+                {
+                    en: "How many weeks in 98 days?",
+                    hi: "98 दिनों में कितने सप्ताह होते हैं?",
+                    options: ["12", "13", "14", "15"],
+                    correct: 2,
+                    explanation: "98 ÷ 7 = 14."
+                }
+            ];
+
+            calData.forEach(add);
+
+
+            /* ---------- GROUP 9: Venn / Set Logic (10 questions) ---------- */
+
+            const vennData = [
+                {
+                    en: "Which group is best represented by: Teachers, Men, Women?",
+                    hi: "किस समूह को दर्शाता है: शिक्षक, पुरुष, महिलाएँ?",
+                    options: ["Three overlapping sets", "Three separate sets", "Two overlapping, one separate", "One inside two"],
+                    correct: 2,
+                    explanation: "Teachers include men & women → overlap."
+                },
+                {
+                    en: "Which Venn represents: Doctors, Engineers, Professionals?",
+                    hi: "कौन सा वेन आरेख दर्शाता है: डॉक्टर, इंजीनियर, प्रोफेशनल?",
+                    options: ["All inside one", "All overlapping", "Separate circles", "Two overlap, one outside"],
+                    correct: 1,
+                    explanation: "All are subsets of professionals."
+                },
+                {
+                    en: "Which Venn for: Boys, Students, Class 6?",
+                    hi: "कौन सा वेन आरेख उपयुक्त है: लड़के, विद्यार्थी, कक्षा 6?",
+                    options: ["Nested circles", "Three overlapping", "Two overlap, one inside", "Separate"],
+                    correct: 2,
+                    explanation: "Class 6 ⊂ Students; Boys overlap."
+                },
+                {
+                    en: "Which Venn for: Circle, Shapes, Triangle?",
+                    hi: "वृत्त, आकृतियाँ, त्रिभुज — कौन सा वेन आरेख?",
+                    options: ["Shapes big, others inside", "Separate", "All overlap", "Two inside one"],
+                    correct: 3,
+                    explanation: "Circle & triangle are subsets of shapes."
+                },
+                {
+                    en: "Which group: Water, Liquid, Milk?",
+                    hi: "जल, द्रव, दूध — कौन सा वेन?",
+                    options: ["One inside two", "Two inside one", "All separate", "Overlapping"],
+                    correct: 1,
+                    explanation: "Water & milk ⊂ liquids."
+                },
+                {
+                    en: "Which Venn for: Student, Athlete, Boy?",
+                    hi: "विद्यार्थी, खिलाड़ी, लड़का — कौन सा वेन?",
+                    options: ["All overlap", "Separate", "Two overlap, one outside", "One inside two"],
+                    correct: 0,
+                    explanation: "A boy can be student & athlete."
+                },
+                {
+                    en: "Which group: Animals, Dogs, Cats?",
+                    hi: "जानवर, कुत्ते, बिल्ली — कौन सा वेन?",
+                    options: ["Big circle animals, others inside", "Separate", "Overlap", "Nested triangles"],
+                    correct: 0,
+                    explanation: "Dogs & cats ⊂ animals."
+                },
+                {
+                    en: "Which group: Vehicles, Car, Bus?",
+                    hi: "वाहन, कार, बस — कौन सा वेन?",
+                    options: ["Vehicles big → car & bus inside", "Separate", "Only overlap", "Random"],
+                    correct: 0,
+                    explanation: "Car & bus ⊂ vehicles."
+                },
+                {
+                    en: "Which Venn for: Mango, Fruit, Food?",
+                    hi: "आम, फल, भोजन — वेन आरेख?",
+                    options: ["Nested 3 circles", "Separate", "Overlap", "Two, one outside"],
+                    correct: 0,
+                    explanation: "Mango ⊂ fruit ⊂ food."
+                },
+                {
+                    en: "Which Venn for: Pen, Pencil, Stationery?",
+                    hi: "पेन, पेंसिल, स्टेशनरी — कौन सा वेन?",
+                    options: ["Stationery big circle inside pen/pencil", "Separate", "Overlap only", "Two inside one"],
+                    correct: 3,
+                    explanation: "Pen & pencil are inside stationery."
+                }
+            ];
+
+            vennData.forEach(add);
+
+            /* ---------- END OF QUESTION BANK (150 QUESTIONS) ---------- */
+
+            return q;
+        };
+
+        const QUESTION_BANK = buildQuestionBank();
+
+        /* ----------------------------- MAIN APP COMPONENT ----------------------------- */
+
+        const App = () => {
+            const [gameState, setGameState] = useState("login");
+            const [studentName, setStudentName] = useState("");
+            const [questions, setQuestions] = useState([]);
+            const [index, setIndex] = useState(0);
+            const [score, setScore] = useState(0);
+            const [time, setTime] = useState(45);
+            const [answered, setAnswered] = useState(false);
+            const [selectedOptions, setSelectedOptions] = useState({});
+
+            /* ------------------- Start Quiz ------------------- */
+            const startQuiz = (e) => {
+                if (e) e.preventDefault();
+                if (!studentName.trim()) return;
+
+                const shuffled = [...QUESTION_BANK].sort(() => 0.5 - Math.random());
+                const picked = shuffled.slice(0, 15);
+
+                setQuestions(picked);
+                setScore(0);
+                setSelectedOptions({});
+                setIndex(0);
+                setTime(45);
+                setAnswered(false);
+                setGameState("playing");
+            };
+
+            /* ------------------- Timer ------------------- */
+            useEffect(() => {
+                if (gameState !== "playing") return;
+                if (answered) return;
+
+                if (time === 0) {
+                    setSelectedOptions((prev) => ({ ...prev, [index]: -1 }));
+                    setAnswered(true);
+                    setTimeout(nextQuestion, 1200);
+                    return;
+                }
+
+                const timer = setTimeout(() => setTime((t) => t - 1), 1000);
+                return () => clearTimeout(timer);
+            }, [gameState, time, answered, index]);
+
+            /* ------------------- Selecting Option ------------------- */
+            const pickOption = (optIndex) => {
+                if (answered) return;
+
+                setSelectedOptions((prev) => ({ ...prev, [index]: optIndex }));
+                setAnswered(true);
+
+                const correct = questions[index].correct;
+                if (optIndex === correct) {
+                    setScore((s) => s + 1);
+                }
+
+                setTimeout(nextQuestion, 1200);
+            };
+
+            /* ------------------- Move to Next Question ------------------- */
+            const nextQuestion = () => {
+                if (index < 14) {
+                    setIndex((i) => i + 1);
+                    setTime(45);
+                    setAnswered(false);
+                } else {
+                    setGameState("results");
+                }
+            };
+
+            /* ------------------- Option Styling Helper ------------------- */
+            const optionStyle = (qIndex, optIndex) => {
+                const selected = selectedOptions[qIndex];
+                const correct = questions[qIndex].correct;
+
+                if (selected === undefined) {
+                    return "bg-white/5 border border-white/20 hover:bg-blue-500/20 hover:border-blue-400 text-white";
+                }
+
+                if (optIndex === correct) {
+                    return "bg-green-600/20 border border-green-500 text-green-300";
+                }
+
+                if (optIndex === selected) {
+                    return "bg-red-600/20 border border-red-500 text-red-300";
+                }
+
+                return "bg-white/5 border border-white/10 opacity-40 text-slate-400";
+            };
+
+            /* ------------------- SCREEN: LOGIN ------------------- */
+            if (gameState === "login") {
+                return (
+                    <>
+                        <Background3D />
+
+                        <div className="min-h-screen flex flex-col justify-center items-center p-6 fade-in">
+                            <div className="mb-8 text-center">
+                                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/15 mb-3">
+                                    <span className="bg-orange-500/90 p-2 rounded-full text-white shadow-lg">
+                                        <Icons.Brain />
+                                    </span>
+                                    <div className="text-left">
+                                        <div className="text-xs uppercase tracking-[0.3em] text-slate-300">
+                                            Savera Club
+                                        </div>
+                                        <div className="text-[11px] text-slate-400">
+                                            NMMS Bilingual Reasoning Portal
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h1 className="text-4xl sm:text-5xl font-bold glow-text drop-shadow-xl">
+                                    NMMS Mock Test
+                                </h1>
+                                <p className="mt-3 text-slate-300 text-sm">
+                                    Mental Ability Test • English + हिन्दी
+                                </p>
+                            </div>
+
+                            <div className="glass rounded-3xl p-8 w-full max-w-md border border-slate-600/70">
+                                <h2 className="text-2xl font-semibold mb-2 text-center">
+                                    Enter Your Details
+                                </h2>
+                                <p className="text-xs text-slate-400 text-center mb-6">
+                                    Please enter your name to begin the quiz
+                                </p>
+
+                                <form onSubmit={startQuiz} className="space-y-5">
+                                    <div>
+                                        <label className="block text-xs mb-2 text-slate-300">
+                                            Student Name / छात्र का नाम
+                                        </label>
+                                        <div className="flex items-center gap-2 bg-slate-900/70 border border-slate-500/80 rounded-xl px-3">
+                                            <span className="text-slate-400">
+                                                <Icons.User />
+                                            </span>
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent outline-none py-3 text-sm"
+                                                placeholder="Type your full name here..."
+                                                value={studentName}
+                                                onChange={(e) => setStudentName(e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full btn-primary text-white font-semibold py-3.5 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2"
+                                    >
+                                        Start Quiz / क्विज़ शुरू करें
+                                    </button>
+                                </form>
+
+                                <div className="mt-5 text-[11px] text-slate-400 text-center">
+                                    You will get 15 random questions out of 150.
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+            }
+
+            /* ------------------- SCREEN: PLAYING (QUIZ) ------------------- */
+            if (gameState === "playing") {
+                if (!questions.length) return null;
+
+                const q = questions[index];
+
+                return (
+                    <>
+                        <Background3D />
+                        <main className="min-h-screen max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
+                            {/* Header */}
+                            <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div>
+                                    <h1 className="text-2xl sm:text-3xl font-bold glow-text">
+                                        NMMS Reasoning Quiz
+                                    </h1>
+                                    <p className="text-xs text-slate-300 mt-1">
+                                        Student: <span className="font-semibold">{studentName}</span>
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                        <div className="text-xs uppercase tracking-wide text-slate-400">
+                                            Question
+                                        </div>
+                                        <div className="text-lg font-semibold text-blue-200">
+                                            {index + 1} / 15
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/70 border border-slate-600/70">
+                                        <Icons.Clock />
+                                        <span className="text-sm font-semibold">
+                                            {time}s
+                                        </span>
+                                    </div>
+                                </div>
+                            </header>
+
+                            {/* Question Card */}
+                            <section className="glass-card rounded-3xl p-6 sm:p-8">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="bg-blue-900/40 text-xs px-3 py-1 rounded-full border border-blue-700/60">
+                                        Q{index + 1}
+                                    </span>
+                                    <span className="text-[11px] text-slate-400">
+                                        MAT • Reasoning • English + हिन्दी
+                                    </span>
+                                </div>
+
+                                <p className="text-sm sm:text-base whitespace-pre-line text-slate-100 leading-relaxed mb-6">
+                                    {q.q}
+                                </p>
+
+                                <div className="grid gap-3">
+                                    {q.options.map((opt, optIndex) => (
+                                        <button
+                                            key={optIndex}
+                                            className={
+                                                "w-full text-left px-4 py-3 rounded-xl text-sm sm:text-base transition-all " +
+                                                optionStyle(index, optIndex)
+                                            }
+                                            onClick={() => pickOption(optIndex)}
+                                        >
+                                            {String.fromCharCode(65 + optIndex)}. {opt}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* No explanation here (as per your choice: only in review) */}
+
+                                <div className="mt-6 flex justify-between items-center text-xs text-slate-400">
+                                    <span>Time is auto-submitted when it reaches 0.</span>
+                                    <span>Attempt all questions sincerely ✨</span>
+                                </div>
+                            </section>
+                        </main>
+                    </>
+                );
+            }
+
+            /* ------------------- SCREEN: RESULTS ------------------- */
+            if (gameState === "results") {
+                return (
+                    <>
+                        <Background3D />
+
+                        <main className="max-w-3xl mx-auto p-6 mt-12">
+
+                            <div className="glass-card rounded-2xl shadow-xl overflow-hidden mb-6 p-10 text-center border border-white/10 backdrop-blur-xl bg-white/5">
+                                <div className="inline-block p-5 bg-white/10 rounded-full mb-5 shadow-md shadow-blue-500/20">
+                                    <Icons.Award />
+                                </div>
+
+                                <h2 className="text-4xl font-extrabold mb-3 tracking-tight text-blue-200">
+                                    Quiz Completed!
+                                </h2>
+                                <p className="text-slate-300 mb-6 text-lg">
+                                    Great work, {studentName}! 🎉
+                                </p>
+
+                                {/* Score Section */}
+                                <div className="flex justify-center gap-14 mt-6">
+                                    <div className="text-center">
+                                        <div className="text-5xl font-bold text-green-400 drop-shadow-md">
+                                            {score}
+                                        </div>
+                                        <div className="text-xs text-slate-400 mt-1">
+                                            Score / अंक
+                                        </div>
+                                    </div>
+
+                                    <div className="w-px bg-white/20"></div>
+
+                                    <div className="text-center">
+                                        <div className="text-5xl font-bold text-yellow-300 drop-shadow-md">
+                                            {Math.round((score / 15) * 100)}%
+                                        </div>
+                                        <div className="text-xs text-slate-400 mt-1">
+                                            Accuracy / शुद्धता
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setGameState("login")}
+                                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg text-white font-bold py-4 rounded-xl mt-10 text-lg tracking-wide transition-all flex justify-center items-center gap-2"
+                                >
+                                    Restart Quiz / क्विज़ दोबारा दें
+                                </button>
+                            </div>
+
+                            {/* Review Answers */}
+                            <h3 className="text-2xl font-bold mb-4 text-blue-300">
+                                Review Answers / उत्तर देखें
+                            </h3>
+
+                            <div className="space-y-4 pb-10">
+                                {questions.map((q, idx) => (
+                                    <div key={idx} className="glass-panel p-5 rounded-xl border border-white/10 bg-white/5">
+                                        <div className="flex justify-between mb-3">
+                                            <span className="bg-blue-900/40 text-xs px-3 py-1 rounded-full border border-blue-800/40">
+                                                Q{idx + 1}
+                                            </span>
+
+                                            {selectedOptions[idx] === q.correct ? (
+                                                <span className="text-green-400 flex items-center gap-1 text-sm">
+                                                    <Icons.Check /> Correct
+                                                </span>
+                                            ) : (
+                                                <span className="text-red-400 flex items-center gap-1 text-sm">
+                                                    <Icons.X /> Wrong
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <p className="text-sm whitespace-pre-line mb-3 text-slate-200 leading-relaxed">
+                                            {q.q}
+                                        </p>
+
+                                        <div className="bg-blue-900/30 border border-blue-700/30 p-3 rounded-lg text-blue-200 text-sm">
+                                            <b>Answer:</b> {q.options[q.correct]}
+                                        </div>
+
+                                        <div className="text-xs text-slate-400 mt-2">
+                                            Explanation: {q.explanation}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
+                    </>
+                );
+            }
+
+            return null;
+        }; // END of App Component
+
+        /* ----------------------------- RENDER APP ----------------------------- */
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+</script>
+
+<!-- ================= FOOTER ================= -->
+<footer class="mt-20 bg-slate-900/60 backdrop-blur-xl border-t border-slate-700/50">
+    <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-8">
+
+        <!-- Left -->
+        <div class="flex items-center gap-5">
+            <img src="photo/logo.jpg" 
+                 class="w-16 h-16 rounded-xl border border-white/20 shadow-lg shadow-blue-500/30 object-cover hover:scale-105 transition" 
+                 alt="Logo">
+
+            <div>
+                <p class="text-xl font-semibold text-slate-200">
+                    Savera Club • NMMS Portal
+                </p>
+
+                <p class="bg-gradient-to-r from-blue-400 via-purple-300 to-pink-300 bg-clip-text text-transparent font-semibold text-sm animate-pulse">
+                    Made with ❤️ by Vivek Yadav (Rahagir)
+                </p>
+            </div>
+        </div>
+
+        <!-- Right (icons) -->
+        <div class="flex items-center gap-7">
+            <a class="text-slate-300 hover:text-pink-400 hover:scale-110 transition">
+                <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2c1.7 0 3 1.3 3 3a3 3 0 11-3-3zm4.8-.9a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0z"/>
+                </svg>
+            </a>
+
+            <a class="text-slate-300 hover:text-gray-200 hover:scale-110 transition">
+                <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 011.2-3.3 4.4 4.4 0 01.1-3.2s1-.3 3.3 1.2a11 11 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2a4.4 4.4 0 01.1 3.2 4.7 4.7 0 011.2 3.3c0 4.7-2.9 5.7-5.7 6 .4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0012 .3z"/>
+                </svg>
+            </a>
+
+            <a class="text-slate-300 hover:text-blue-400 hover:scale-110 transition">
+                <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4.98 3.5a2.5 2.5 0 11-.01 5 2.5 2.5 0 01.01-5zM3 8.98h4v12H3v-12zM14.5 9c-2.1 0-3.5 1.2-3.5 3.9v8h-4v-12h4v1.8c.6-1.2 2.1-2.1 4-2.1 3 0 5 2 5 6.1v6.2h-4v-6c0-2-.7-3-2.5-3z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="text-center text-slate-400 text-sm pb-6">
+        📞 9996445592 • ✉️ vivek.yadav.25cse@bmu.edu.in
+    </div>
+</footer>
+<!-- ================= END FOOTER ================= -->
+
+
+
+</body>
+
+
+
+</html>
