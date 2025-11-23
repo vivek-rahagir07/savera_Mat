@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -117,17 +118,17 @@
 
         /* ------------------ FIREBASE INIT ------------------ */
         const firebaseConfig = {
-          apiKey: "AIzaSyAlZVojwH-cT4LTOMD3dT2FwTucANNrWuI",
-          authDomain: "savera-quiz.firebaseapp.com",
-          projectId: "savera-quiz",
-          storageBucket: "savera-quiz.firebasestorage.app",
-          messagingSenderId: "100531009684",
-          appId: "1:100531009684:web:9ec347c2c517fc86979c81",
-          measurementId: "G-Q50LS00CJH"
+            apiKey: "AIzaSyAlZVojwH-cT4LTOMD3dT2FwTucANNrWuI",
+            authDomain: "savera-quiz.firebaseapp.com",
+            projectId: "savera-quiz",
+            storageBucket: "savera-quiz.firebasestorage.app",
+            messagingSenderId: "100531009684",
+            appId: "1:100531009684:web:9ec347c2c517fc86979c81",
+            measurementId: "G-Q50LS00CJH"
         };
 
         if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.firestore();
 
@@ -854,11 +855,11 @@
             /* ---------- GROUP 5: Direction Sense (20 questions) ---------- */
 
             const dirBase = [
-                { a: 10, b: 5 }, { a: 12, b: 7 }, { a: 8,  b: 4 }, { a: 15, b: 9 },
-                { a: 20, b: 6 }, { a: 11, b: 3 }, { a: 13, b: 8 }, { a: 9,  b: 2 },
-                { a: 14, b: 5 }, { a: 16, b: 10 }, { a: 7,  b: 3 }, { a: 18, b: 6 },
-                { a: 6,  b: 4 }, { a: 21, b: 9 }, { a: 19, b: 5 }, { a: 10, b: 7 },
-                { a: 12, b: 4 }, { a: 17, b: 11 }, { a: 9,  b: 5 }, { a: 8,  b: 6 }
+                { a: 10, b: 5 }, { a: 12, b: 7 }, { a: 8, b: 4 }, { a: 15, b: 9 },
+                { a: 20, b: 6 }, { a: 11, b: 3 }, { a: 13, b: 8 }, { a: 9, b: 2 },
+                { a: 14, b: 5 }, { a: 16, b: 10 }, { a: 7, b: 3 }, { a: 18, b: 6 },
+                { a: 6, b: 4 }, { a: 21, b: 9 }, { a: 19, b: 5 }, { a: 10, b: 7 },
+                { a: 12, b: 4 }, { a: 17, b: 11 }, { a: 9, b: 5 }, { a: 8, b: 6 }
             ];
 
             dirBase.forEach(({ a, b }) => {
@@ -1321,6 +1322,797 @@
                 }
             ];
 
+
+            [
+                {
+                    en: "Find next: 4, 10, 22, 46, 94, ?",
+                    hi: "अगला पद: 4, 10, 22, 46, 94, ?",
+                    options: ["188", "190", "196", "200"],
+                    correct: 0,
+                    explanation: "×2 +2 pattern → next = 94×2+2 = 190"
+                },
+
+                {
+                    en: "Find next: 7, 15, 31, 63, 127, ?",
+                    hi: "अगला पद: 7, 15, 31, 63, 127, ?",
+                    options: ["255", "257", "259", "263"],
+                    correct: 0,
+                    explanation: "×2 +1 each time → next = 127×2+1 = 255"
+                },
+
+                {
+                    en: "Find next: 5, 12, 26, 54, 110, ?",
+                    hi: "अगला पद: 5, 12, 26, 54, 110, ?",
+                    options: ["220", "222", "224", "230"],
+                    correct: 1,
+                    explanation: "×2 +2 pattern"
+                },
+
+                {
+                    en: "Find next: 3, 9, 21, 45, 93, ?",
+                    hi: "अगला पद: 3, 9, 21, 45, 93, ?",
+                    options: ["185", "189", "191", "195"],
+                    correct: 1,
+                    explanation: "×2 +3 pattern"
+                },
+
+                {
+                    en: "Find next: 6, 14, 30, 62, 126, ?",
+                    hi: "अगला पद: 6, 14, 30, 62, 126, ?",
+                    options: ["248", "250", "254", "258"],
+                    correct: 2,
+                    explanation: "×2 +2"
+                },
+
+                {
+                    en: "Find next: 10, 22, 46, 94, 190, ?",
+                    hi: "अगला पद: 10, 22, 46, 94, 190, ?",
+                    options: ["382", "384", "386", "390"],
+                    correct: 1,
+                    explanation: "×2 +2"
+                },
+
+                {
+                    en: "Find next: 8, 17, 35, 71, 143, ?",
+                    hi: "अगला पद: 8, 17, 35, 71, 143, ?",
+                    options: ["285", "287", "289", "295"],
+                    correct: 1,
+                    explanation: "×2 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 11, 24, 50, 102, 206, ?",
+                    hi: "अगला पद: 11, 24, 50, 102, 206, ?",
+                    options: ["412", "414", "418", "420"],
+                    correct: 0,
+                    explanation: "×2 -2 pattern"
+                },
+
+                {
+                    en: "Find next: 9, 11, 17, 33, 65, ?",
+                    hi: "अगला पद: 9, 11, 17, 33, 65, ?",
+                    options: ["121", "129", "131", "133"],
+                    correct: 1,
+                    explanation: "Differences doubled: 2,6,16,32 → next +64"
+                },
+
+                {
+                    en: "Find next: 12, 28, 60, 124, 252, ?",
+                    hi: "अगला पद: 12, 28, 60, 124, 252, ?",
+                    options: ["508", "510", "516", "520"],
+                    correct: 0,
+                    explanation: "+16, +32, +64, +128 → powers of 2"
+                },
+
+                {
+                    en: "Find next: 4, 6, 18, 20, 60, 62, ?",
+                    hi: "अगला पद: 4, 6, 18, 20, 60, 62, ?",
+                    options: ["180", "182", "184", "186"],
+                    correct: 0,
+                    explanation: "×3, +2 alternate"
+                },
+
+                {
+                    en: "Find next: 2, 7, 28, 33, 132, 137, ?",
+                    hi: "अगला पद: 2, 7, 28, 33, 132, 137, ?",
+                    options: ["548", "550", "552", "556"],
+                    correct: 0,
+                    explanation: "×4, +5 alternate"
+                },
+
+                {
+                    en: "Find next: 5, 9, 27, 31, 93, 97, ?",
+                    hi: "अगला पद: 5, 9, 27, 31, 93, 97, ?",
+                    options: ["291", "293", "295", "300"],
+                    correct: 0,
+                    explanation: "×3, +4 alternate"
+                },
+
+                {
+                    en: "Find next: 3, 6, 18, 21, 63, 66, ?",
+                    hi: "अगला पद: 3, 6, 18, 21, 63, 66, ?",
+                    options: ["198", "200", "202", "210"],
+                    correct: 0,
+                    explanation: "×3, +3 alternate"
+                },
+
+                {
+                    en: "Find next: 6, 8, 24, 26, 78, 80, ?",
+                    hi: "अगला पद: 6, 8, 24, 26, 78, 80, ?",
+                    options: ["240", "242", "244", "248"],
+                    correct: 0,
+                    explanation: "×3 alternate"
+                },
+
+                {
+                    en: "Find next: 9, 18, 36, 72, 144, ?",
+                    hi: "अगला पद: 9, 18, 36, 72, 144, ?",
+                    options: ["280", "288", "290", "300"],
+                    correct: 1,
+                    explanation: "×2 pattern"
+                },
+
+                {
+                    en: "Find next: 13, 21, 34, 55, 89, ?",
+                    hi: "अगला पद: 13, 21, 34, 55, 89, ?",
+                    options: ["142", "144", "145", "150"],
+                    correct: 2,
+                    explanation: "Fibonacci"
+                },
+
+                {
+                    en: "Find next: 4, 9, 19, 34, 54, ?",
+                    hi: "अगला पद: 4, 9, 19, 34, 54, ?",
+                    options: ["74", "79", "84", "89"],
+                    correct: 1,
+                    explanation: "Differences +5,10,15,20..."
+                },
+
+                {
+                    en: "Find next: 5, 13, 27, 47, 73, ?",
+                    hi: "अगला पद: 5, 13, 27, 47, 73, ?",
+                    options: ["105", "107", "109", "113"],
+                    correct: 1,
+                    explanation: "+8,14,20,26 (diff +6)"
+                },
+
+                {
+                    en: "Find next: 7, 20, 61, 184, ?",
+                    hi: "अगला पद: 7, 20, 61, 184, ?",
+                    options: ["549", "550", "551", "553"],
+                    correct: 2,
+                    explanation: "×3 -1"
+                },
+
+                {
+                    en: "Find next: 10, 18, 31, 49, 72, ?",
+                    hi: "अगला पद: 10, 18, 31, 49, 72, ?",
+                    options: ["98", "100", "102", "104"],
+                    correct: 2,
+                    explanation: "+8,13,18,23 (+5)"
+                },
+
+                {
+                    en: "Find next: 12, 21, 37, 60, 90, ?",
+                    hi: "अगला पद: 12, 21, 37, 60, 90, ?",
+                    options: ["123", "125", "127", "130"],
+                    correct: 2,
+                    explanation: "Diff: 9,16,23,30 (+7)"
+                },
+
+                {
+                    en: "Find next: 5, 14, 30, 53, 83, ?",
+                    hi: "अगला पद: 5, 14, 30, 53, 83, ?",
+                    options: ["118", "120", "122", "126"],
+                    correct: 1,
+                    explanation: "Diff +9, +16, +23, +30"
+                },
+
+                {
+                    en: "Find next: 7, 15, 28, 46, 69, ?",
+                    hi: "अगला पद: 7, 15, 28, 46, 69, ?",
+                    options: ["94", "97", "99", "101"],
+                    correct: 1,
+                    explanation: "Diff +8,+13,+18,+23"
+                },
+
+                {
+                    en: "Find next: 8, 20, 38, 62, 92, ?",
+                    hi: "अगला पद: 8, 20, 38, 62, 92, ?",
+                    options: ["124", "126", "128", "130"],
+                    correct: 2,
+                    explanation: "Diff +12,+18,+24,+30"
+                },
+
+                {
+                    en: "Find next: 4, 12, 5, 15, 6, 18, 7, ?",
+                    hi: "अगला पद: 4, 12, 5, 15, 6, 18, 7, ?",
+                    options: ["19", "20", "21", "22"],
+                    correct: 0,
+                    explanation: "Pattern: +8, +3, +9, +3, +12, +3…"
+                },
+
+                {
+                    en: "Find next: 3, 7, 6, 10, 9, 13, 12, ?",
+                    hi: "अगला पद: 3, 7, 6, 10, 9, 13, 12, ?",
+                    options: ["15", "16", "17", "18"],
+                    correct: 1,
+                    explanation: "+4, -1 pattern"
+                },
+
+                {
+                    en: "Find next: 8, 5, 15, 12, 36, 33, ?",
+                    hi: "अगला पद: 8, 5, 15, 12, 36, 33, ?",
+                    options: ["30", "32", "34", "36"],
+                    correct: 0,
+                    explanation: "-3, ×3 pattern"
+                },
+
+                {
+                    en: "Find next: 11, 8, 24, 21, 63, 60, ?",
+                    hi: "अगला पद: 11, 8, 24, 21, 63, 60, ?",
+                    options: ["57", "59", "61", "63"],
+                    correct: 0,
+                    explanation: "-3, ×3 pattern"
+                },
+
+                {
+                    en: "Find next: 5, 20, 10, 40, 20, 80, ?",
+                    hi: "अगला पद: 5, 20, 10, 40, 20, 80, ?",
+                    options: ["40", "42", "44", "46"],
+                    correct: 0,
+                    explanation: "×4, ÷2 alternate"
+                },
+
+                {
+                    en: "Find next: 7, 21, 14, 42, 28, 84, ?",
+                    hi: "अगला पद: 7, 21, 14, 42, 28, 84, ?",
+                    options: ["42", "48", "56", "62"],
+                    correct: 2,
+                    explanation: "×3, ÷1.5 pattern"
+                },
+
+                {
+                    en: "Find next: 9, 27, 18, 54, 36, 108, ?",
+                    hi: "अगला पद: 9, 27, 18, 54, 36, 108, ?",
+                    options: ["70", "72", "74", "76"],
+                    correct: 1,
+                    explanation: "×3, ÷1.5 pattern"
+                },
+
+                {
+                    en: "Find next: 5, 17, 53, 161, ?",
+                    hi: "अगला पद: 5, 17, 53, 161, ?",
+                    options: ["483", "485", "487", "489"],
+                    correct: 0,
+                    explanation: "×3 +2 pattern"
+                },
+
+                {
+                    en: "Find next: 12, 25, 51, 103, 207, ?",
+                    hi: "अगला पद: 12, 25, 51, 103, 207, ?",
+                    options: ["415", "417", "421", "426"],
+                    correct: 0,
+                    explanation: "×2 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 15, 46, 139, 418, ?",
+                    hi: "अगला पद: 15, 46, 139, 418, ?",
+                    options: ["1250", "1252", "1260", "1264"],
+                    correct: 2,
+                    explanation: "×3 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 16, 32, 65, 131, 263, ?",
+                    hi: "अगला पद: 16, 32, 65, 131, 263, ?",
+                    options: ["527", "529", "531", "540"],
+                    correct: 0,
+                    explanation: "×2 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 9, 14, 22, 35, 55, ?",
+                    hi: "अगला पद: 9, 14, 22, 35, 55, ?",
+                    options: ["78", "79", "80", "81"],
+                    correct: 1,
+                    explanation: "+5, +8, +13, +20 → Fibonacci difference"
+                },
+
+                {
+                    en: "Find next: 3, 15, 29, 57, 113, ?",
+                    hi: "अगला पद: 3, 15, 29, 57, 113, ?",
+                    options: ["227", "229", "231", "233"],
+                    correct: 0,
+                    explanation: "Next difference doubles"
+                },
+
+                {
+                    en: "Find next: 2, 9, 20, 35, 54, ?",
+                    hi: "अगला पद: 2, 9, 20, 35, 54, ?",
+                    options: ["77", "79", "81", "83"],
+                    correct: 1,
+                    explanation: "+7, +11, +15, +19 (+4)"
+                },
+
+                {
+                    en: "Find next: 11, 23, 47, 95, 191, ?",
+                    hi: "अगला पद: 11, 23, 47, 95, 191, ?",
+                    options: ["381", "383", "385", "389"],
+                    correct: 1,
+                    explanation: "×2 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 6, 13, 27, 56, 114, ?",
+                    hi: "अगला पद: 6, 13, 27, 56, 114, ?",
+                    options: ["231", "232", "233", "236"],
+                    correct: 0,
+                    explanation: "×2 -1 pattern"
+                },
+
+                {
+                    en: "Find next: 14, 29, 59, 119, 239, ?",
+                    hi: "अगला पद: 14, 29, 59, 119, 239, ?",
+                    options: ["479", "481", "483", "485"],
+                    correct: 0,
+                    explanation: "×2 -1"
+                },
+
+                {
+                    en: "Find next: 10, 31, 94, 283, ?",
+                    hi: "अगला पद: 10, 31, 94, 283, ?",
+                    options: ["850", "853", "856", "860"],
+                    correct: 1,
+                    explanation: "×3 +1 pattern"
+                },
+
+                {
+                    en: "Find next: 4, 13, 40, 121, ?",
+                    hi: "अगला पद: 4, 13, 40, 121, ?",
+                    options: ["364", "366", "368", "370"],
+                    correct: 0,
+                    explanation: "×3 +1"
+                },
+
+                {
+                    en: "Find next: 15, 22, 36, 58, 89, ?",
+                    hi: "अगला पद: 15, 22, 36, 58, 89, ?",
+                    options: ["133", "136", "139", "142"],
+                    correct: 1,
+                    explanation: "+7,+14,+22,+31 (+7,+8,+9…) "
+                },
+
+                {
+                    en: "Find next: 3, 7, 16, 34, 71, ?",
+                    hi: "अगला पद: 3, 7, 16, 34, 71, ?",
+                    options: ["143", "145", "147", "149"],
+                    correct: 0,
+                    explanation: "×2 +1"
+                },
+
+                {
+                    en: "Find next: 12, 17, 27, 44, 70, ?",
+                    hi: "अगला पद: 12, 17, 27, 44, 70, ?",
+                    options: ["105", "107", "109", "112"],
+                    correct: 1,
+                    explanation: "+5,+10,+17,+26 (+5,+7,+9)"
+                },
+
+                {
+                    en: "Find next: 8, 18, 38, 78, 158, ?",
+                    hi: "अगला पद: 8, 18, 38, 78, 158, ?",
+                    options: ["318", "320", "322", "324"],
+                    correct: 0,
+                    explanation: "×2 -2"
+                },
+
+                {
+                    en: "Find next: 5, 12, 28, 60, 124, ?",
+                    hi: "अगला पद: 5, 12, 28, 60, 124, ?",
+                    options: ["252", "254", "256", "260"],
+                    correct: 0,
+                    explanation: "×2 +2"
+                }
+            ]
+
+            [
+{
+en:"A man walks 10 m North, then 6 m East, then 10 m South. How far is he from the starting point?",
+hi:"एक आदमी 10 मीटर उत्तर जाता है, फिर 6 मीटर पूर्व, फिर 10 मीटर दक्षिण। वह प्रारंभिक बिंदु से कितनी दूरी पर है?",
+options:["3 m","6 m","10 m","12 m"],
+correct:1,
+explanation:"Net movement = 6 m East."
+},
+
+{
+en:"A person walks 12 m East, then 5 m North, then 12 m West. How far from the start?",
+hi:"एक व्यक्ति 12 मीटर पूर्व, 5 मीटर उत्तर, फिर 12 मीटर पश्चिम जाता है। वह प्रारंभिक बिंदु से कितनी दूरी पर है?",
+options:["5 m","10 m","12 m","17 m"],
+correct:0,
+explanation:"Net movement: only 5 m North."
+},
+
+{
+en:"Ravi walks 8 m North, 4 m East, 8 m South. In which direction is he from the start?",
+hi:"रवि 8 मीटर उत्तर, 4 मीटर पूर्व, फिर 8 मीटर दक्षिण जाता है। वह प्रारंभिक बिंदु से किस दिशा में है?",
+options:["East","West","North","South"],
+correct:0,
+explanation:"Net movement = 4 m East."
+},
+
+{
+en:"A boy walks 5 m South, 7 m East, 5 m North. How far is he from start?",
+hi:"एक लड़का 5 मीटर दक्षिण, 7 मीटर पूर्व, फिर 5 मीटर उत्तर जाता है। वह प्रारंभ से कितनी दूरी पर है?",
+options:["5 m","7 m","10 m","12 m"],
+correct:1,
+explanation:"Net movement = 7 m East."
+},
+
+{
+en:"A man walks 15 m North, then 8 m West. How far is he from start?",
+hi:"एक आदमी 15 मीटर उत्तर और फिर 8 मीटर पश्चिम जाता है। वह प्रारंभ से कितनी दूरी पर है?",
+options:["15 m","17 m","19 m","23 m"],
+correct:1,
+explanation:"Distance = √(15² + 8²) = 17."
+},
+
+{
+en:"A person walks 9 m East, 12 m North, 9 m West. In which direction is he from start?",
+hi:"एक व्यक्ति 9 मीटर पूर्व, 12 मीटर उत्तर, फिर 9 मीटर पश्चिम जाता है। वह प्रारंभ से किस दिशा में है?",
+options:["North","South","East","West"],
+correct:0,
+explanation:"Net movement = 12 m North."
+},
+
+{
+en:"Satish walks 10 m South, 24 m East. How far from the start?",
+hi:"सतीश 10 मीटर दक्षिण, 24 मीटर पूर्व जाता है। प्रारंभ से कितनी दूरी पर है?",
+options:["24 m","26 m","28 m","30 m"],
+correct:2,
+explanation:"Distance = √(10²+24²)=26."
+},
+
+{
+en:"A man walks 20 m North, 21 m East. How far is he from start?",
+hi:"एक आदमी 20 मीटर उत्तर और 21 मीटर पूर्व जाता है। वह प्रारंभ से कितनी दूरी पर है?",
+options:["21 m","29 m","30 m","41 m"],
+correct:2,
+explanation:"Distance √(20² + 21²) = 29."
+},
+
+{
+en:"A person walks 7 m West, 24 m North. How far from start?",
+hi:"एक व्यक्ति 7 मीटर पश्चिम व 24 मीटर उत्तर जाता है। प्रारंभ से दूरी?",
+options:["20 m","25 m","26 m","30 m"],
+correct:2,
+explanation:"Distance = √(7²+24²)=25."
+},
+
+{
+en:"A boy walks 6 m North, 8 m East, 6 m South. Direction from start?",
+hi:"एक लड़का 6 मीटर उत्तर, 8 मीटर पूर्व, 6 मीटर दक्षिण जाता है। वह प्रारंभ से किस दिशा में है?",
+options:["East","West","North","South"],
+correct:0,
+explanation:"Net 8 m East."
+},
+
+{
+en:"A person walks 9 m South, 5 m West, 9 m North. Direction?",
+hi:"एक व्यक्ति 9 मीटर दक्षिण, 5 मीटर पश्चिम, 9 मीटर उत्तर जाता है। किस दिशा में है?",
+options:["East","West","North","South"],
+correct:1,
+explanation:"Net 5 m West."
+},
+
+{
+en:"He walks 10 m East, 15 m North, 10 m West. Distance from start?",
+hi:"वह 10 मीटर पूर्व, 15 मीटर उत्तर, 10 मीटर पश्चिम जाता है। दूरी?",
+options:["10 m","15 m","20 m","25 m"],
+correct:1,
+explanation:"Net 15 m North."
+},
+
+{
+en:"A girl walks 18 m South, then 24 m East. How far?",
+hi:"एक लड़की 18 मीटर दक्षिण, फिर 24 मीटर पूर्व जाती है। दूरी?",
+options:["24 m","30 m","36 m","42 m"],
+correct:1,
+explanation:"Distance = 30."
+},
+
+{
+en:"A person walks 14 m West, 48 m South. Distance from start?",
+hi:"14 मीटर पश्चिम, 48 मीटर दक्षिण। दूरी?",
+options:["48 m","50 m","52 m","54 m"],
+correct:1,
+explanation:"Distance = √(14²+48²)=50."
+},
+
+{
+en:"Rohit walks 21 m North, 20 m West. Distance?",
+hi:"रोहित 21 मीटर उत्तर, 20 मीटर पश्चिम। दूरी?",
+options:["20 m","21 m","29 m","41 m"],
+correct:2,
+explanation:"√(21²+20²)=29."
+},
+
+{
+en:"A boy walks 3 m North, 4 m East, 3 m South. Distance?",
+hi:"3 मीटर उत्तर, 4 मीटर पूर्व, 3 मीटर दक्षिण। दूरी?",
+options:["2 m","3 m","4 m","5 m"],
+correct:2,
+explanation:"Net 4 m East."
+},
+
+{
+en:"A man walks 8 m West, 6 m South, 8 m East. Direction?",
+hi:"8 मीटर पश्चिम, फिर 6 दक्षिण, फिर 8 पूर्व। दिशा?",
+options:["North","South","East","West"],
+correct:1,
+explanation:"Net 6 m South."
+},
+
+{
+en:"A guy walks 20 m North, 15 m East, 5 m South. Distance?",
+hi:"20 मीटर उत्तर, 15 पूर्व, 5 दक्षिण। दूरी?",
+options:["15 m","20 m","25 m","30 m"],
+correct:2,
+explanation:"Net 15 m North, 15 m East → √(450)=≈21 → closest 25."
+},
+
+{
+en:"A man walks 30 m East, 40 m North. Direction from start?",
+hi:"30 मीटर पूर्व, 40 मीटर उत्तर। प्रारंभ से दिशा?",
+options:["North-East","South-East","North-West","South-West"],
+correct:0,
+explanation:"Both East & North."
+},
+
+{
+en:"He walks 9 m North, 12 m West. Direction?",
+hi:"9 मीटर उत्तर, 12 मीटर पश्चिम। दिशा?",
+options:["North-West","North-East","South-West","South-East"],
+correct:0,
+explanation:"North + West."
+},
+
+{
+en:"Walks 15 m East, 20 m South, 15 m West. Direction?",
+hi:"15 मीटर पूर्व, 20 मीटर दक्षिण, 15 मीटर पश्चिम। दिशा?",
+options:["North","South","East","West"],
+correct:1,
+explanation:"Net = 20 m South."
+},
+
+{
+en:"Walks 5 m East, 12 m North, 5 m West. Distance?",
+hi:"5 मीटर पूर्व, 12 मीटर उत्तर, 5 पश्चिम। दूरी?",
+options:["5 m","10 m","12 m","14 m"],
+correct:2,
+explanation:"Only 12 m North."
+},
+
+{
+en:"Walks 8 m North, 5 m West, 8 m South. Direction?",
+hi:"8 उत्तर, 5 पश्चिम, 8 दक्षिण। दिशा?",
+options:["East","West","North","South"],
+correct:1,
+explanation:"Net 5 m West."
+},
+
+{
+en:"Walks 25 m South, 7 m East. Distance?",
+hi:"25 दक्षिण, 7 पूर्व। दूरी?",
+options:["25 m","26 m","28 m","32 m"],
+correct:1,
+explanation:"√(25²+7²)=26."
+},
+
+{
+en:"Walks 12 m North, 35 m East. Direction?",
+hi:"12 उत्तर, 35 पूर्व। दिशा?",
+options:["North-East","South-East","North-West","South-West"],
+correct:0,
+explanation:"Both positive → NE."
+},
+
+{
+en:"Walks 13 m South, 84 m West. Distance?",
+hi:"13 दक्षिण, 84 पश्चिम। दूरी?",
+options:["84 m","85 m","86 m","87 m"],
+correct:1,
+explanation:"√(13²+84²)=85."
+},
+
+{
+en:"Walks 9 m North, 40 m East, 41 m South. Direction?",
+hi:"9 उत्तर, 40 पूर्व, 41 दक्षिण। दिशा?",
+options:["North-East","South-East","South-West","North-West"],
+correct:1,
+explanation:"Net South & East."
+},
+
+{
+en:"Walks 5 m North, 12 m East, 13 m South. Distance?",
+hi:"5 उत्तर, 12 पूर्व, 13 दक्षिण। दूरी?",
+options:["12 m","13 m","17 m","5 m"],
+correct:2,
+explanation:"Net = 8 South, 12 East → √208=14 → closest 17."
+},
+
+{
+en:"Walks 13 m East, 84 m South. Distance?",
+hi:"13 पूर्व, 84 दक्षिण। दूरी?",
+options:["84","85","86","87"],
+correct:1,
+explanation:"Right triangle 13-84-85."
+},
+
+{
+en:"Walks 7 m South, 24 m East, 25 m North. Direction?",
+hi:"7 दक्षिण, 24 पूर्व, 25 उत्तर। दिशा?",
+options:["North-East","North-West","South-East","South-West"],
+correct:0,
+explanation:"Net 18 N, 24 E."
+},
+
+{
+en:"Walks 6 m North, 8 m East. Direction?",
+hi:"6 उत्तर, 8 पूर्व। दिशा?",
+options:["NE","SE","NW","SW"],
+correct:0,
+explanation:"North-East."
+},
+
+{
+en:"Walks 45 m North, 28 m East. Distance?",
+hi:"45 उत्तर, 28 पूर्व। दूरी?",
+options:["50","53","55","60"],
+correct:1,
+explanation:"√(45²+28²)=53."
+},
+
+{
+en:"Walks 33 m East, 56 m South. Direction?",
+hi:"33 पूर्व, 56 दक्षिण। दिशा?",
+options:["South-East","South-West","North-East","North-West"],
+correct:0,
+explanation:"East + South."
+},
+
+{
+en:"Walks 12 m West, 35 m South. Distance?",
+hi:"12 पश्चिम, 35 दक्षिण। दूरी?",
+options:["34","36","37","38"],
+correct:2,
+explanation:"√(12²+35²)=37."
+},
+
+{
+en:"Walks 16 m North, 63 m West. Distance?",
+hi:"16 उत्तर, 63 पश्चिम। दूरी?",
+options:["65","66","67","68"],
+correct:0,
+explanation:"√(16²+63²)=65."
+},
+
+{
+en:"Walks 48 m South, 14 m East. Direction?",
+hi:"48 दक्षिण, 14 पूर्व। दिशा?",
+options:["SE","SW","NE","NW"],
+correct:0,
+explanation:"South + East."
+},
+
+{
+en:"Walks 50 m East, 120 m North. Direction?",
+hi:"50 पूर्व, 120 उत्तर। दिशा?",
+options:["NE","SE","NW","SW"],
+correct:0,
+explanation:"NE."
+},
+
+{
+en:"Walks 15 m West, 36 m North. Distance?",
+hi:"15 पश्चिम, 36 उत्तर। दूरी?",
+options:["36","38","39","41"],
+correct:3,
+explanation:"√(15²+36²)=39."
+},
+
+{
+en:"Walks 20 m South, 21 m West. Distance?",
+hi:"20 दक्षिण, 21 पश्चिम। दूरी?",
+options:["21","29","30","41"],
+correct:1,
+explanation:"√(20²+21²)=29."
+},
+
+{
+en:"A person walks 70 m North, 24 m West. Direction?",
+hi:"70 उत्तर, 24 पश्चिम। दिशा?",
+options:["NW","NE","SE","SW"],
+correct:0,
+explanation:"North + West."
+},
+
+{
+en:"Walks 30 m West, 40 m South. Distance?",
+hi:"30 पश्चिम, 40 दक्षिण। दूरी?",
+options:["40","50","60","70"],
+correct:1,
+explanation:"3-4-5 triangle → 50."
+},
+
+{
+en:"Walks 8 m North, 15 m East, 17 m South. Distance?",
+hi:"8 उत्तर, 15 पूर्व, 17 दक्षिण। दूरी?",
+options:["15","17","19","21"],
+correct:2,
+explanation:"Net = 9 South, 15 East → √306 ≈ 17.4 → closest 19."
+},
+
+{
+en:"Walks 28 m South, 21 m East. Direction?",
+hi:"28 दक्षिण, 21 पूर्व। दिशा?",
+options:["SE","SW","NE","NW"],
+correct:0,
+explanation:"South + East."
+},
+
+{
+en:"Walks 9 m East, 40 m South, 41 m West. Direction?",
+hi:"9 पूर्व, 40 दक्षिण, 41 पश्चिम। दिशा?",
+options:["South-West","South-East","North-West","North-East"],
+correct:0,
+explanation:"Net = West + South."
+},
+
+{
+en:"Walks 5 m West, 12 m South, 13 m East. Direction?",
+hi:"5 पश्चिम, 12 दक्षिण, 13 पूर्व। दिशा?",
+options:["SE","SW","NE","NW"],
+correct:0,
+explanation:"Net = 8 E, 12 S."
+},
+
+{
+en:"Walks 15 m North, 8 m East, 17 m South. Direction?",
+hi:"15 उत्तर, 8 पूर्व, 17 दक्षिण। दिशा?",
+options:["SE","SW","NE","NW"],
+correct:1,
+explanation:"Net 2 South, 8 East."
+},
+
+{
+en:"Walks 45 m North, 28 m West. Distance?",
+hi:"45 उत्तर, 28 पश्चिम। दूरी?",
+options:["50","53","55","60"],
+correct:1,
+explanation:"√(45²+28²)=53."
+},
+
+{
+en:"Walks 42 m South, 40 m West. Distance?",
+hi:"42 दक्षिण, 40 पश्चिम। दूरी?",
+options:["58","60","62","65"],
+correct:0,
+explanation:"√(42²+40²)=58."
+},
+
+{
+en:"Walks 25 m East, 60 m North. Direction?",
+hi:"25 पूर्व, 60 उत्तर। दिशा?",
+options:["NE","NW","SE","SW"],
+correct:0,
+explanation:"NE."
+}
+]
+
+
+
             vennData.forEach(add);
 
             /* ---------- END OF QUESTION BANK (150 QUESTIONS) ---------- */
@@ -1581,8 +2373,8 @@
                         <Background3D />
                         <NavBar
                             current="playing"
-                            onQuizClick={() => {}}
-                            onScoresClick={() => {}}
+                            onQuizClick={() => { }}
+                            onScoresClick={() => { }}
                         />
 
                         <main className="min-h-[calc(100vh-64px)] max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
@@ -1892,8 +2684,8 @@
 
             <!-- Left -->
             <div class="flex items-center gap-5">
-                <img src="photo/logo.jpg" 
-                    class="w-16 h-16 rounded-xl border border-white/20 shadow-lg shadow-blue-500/30 object-cover hover:scale-105 transition" 
+                <img src="photo/logo.jpg"
+                    class="w-16 h-16 rounded-xl border border-white/20 shadow-lg shadow-blue-500/30 object-cover hover:scale-105 transition"
                     alt="Logo">
 
                 <div>
@@ -1901,7 +2693,8 @@
                         Savera Club • NMMS Portal
                     </p>
 
-                    <p class="bg-gradient-to-r from-blue-400 via-purple-300 to-pink-300 bg-clip-text text-transparent font-semibold text-sm animate-pulse">
+                    <p
+                        class="bg-gradient-to-r from-blue-400 via-purple-300 to-pink-300 bg-clip-text text-transparent font-semibold text-sm animate-pulse">
                         Made with ❤️ by Vivek Yadav (Rahagir)
                     </p>
                 </div>
@@ -1911,19 +2704,22 @@
             <div class="flex items-center gap-7">
                 <a class="text-slate-300 hover:text-pink-400 hover:scale-110 transition">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2c1.7 0 3 1.3 3 3a3 3 0 11-3-3zm4.8-.9a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0z"/>
+                        <path
+                            d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2c1.7 0 3 1.3 3 3a3 3 0 11-3-3zm4.8-.9a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0z" />
                     </svg>
                 </a>
 
                 <a class="text-slate-300 hover:text-gray-200 hover:scale-110 transition">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 011.2-3.3 4.4 4.4 0 01.1-3.2स1-.3 3.3 1.2a11 11 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2a4.4 4.4 0 01.1 3.2 4.7 4.7 0 011.2 3.3c0 4.7-2.9 5.7-5.7 6 .4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0012 .3z"/>
+                        <path
+                            d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 011.2-3.3 4.4 4.4 0 01.1-3.2स1-.3 3.3 1.2a11 11 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2a4.4 4.4 0 01.1 3.2 4.7 4.7 0 011.2 3.3c0 4.7-2.9 5.7-5.7 6 .4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0012 .3z" />
                     </svg>
                 </a>
 
                 <a class="text-slate-300 hover:text-blue-400 hover:scale-110 transition">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4.98 3.5a2.5 2.5 0 11-.01 5 2.5 2.5 0 01.01-5zM3 8.98h4v12H3v-12zM14.5 9c-2.1 0-3.5 1.2-3.5 3.9v8h-4v-12h4v1.8c.6-1.2 2.1-2.1 4-2.1 3 0 5 2 5 6.1v6.2h-4v-6c0-2-.7-3-2.5-3z"/>
+                        <path
+                            d="M4.98 3.5a2.5 2.5 0 11-.01 5 2.5 2.5 0 01.01-5zM3 8.98h4v12H3v-12zM14.5 9c-2.1 0-3.5 1.2-3.5 3.9v8h-4v-12h4v1.8c.6-1.2 2.1-2.1 4-2.1 3 0 5 2 5 6.1v6.2h-4v-6c0-2-.7-3-2.5-3z" />
                     </svg>
                 </a>
             </div>
@@ -1937,4 +2733,5 @@
     <!-- ================= END FOOTER ================= -->
 
 </body>
+
 </html>
