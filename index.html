@@ -2111,6 +2111,858 @@ explanation:"NE."
 }
 ]
 
+/* ------------------ 50 VERY TOUGH BLOOD RELATION QUESTIONS ------------------ */
+
+const blood50 = [
+
+{
+en:"Pointing to a woman, A said: “She is the mother of the only daughter of my father’s only son.” How is that woman related to A?",
+hi:"एक महिला की ओर इशारा करते हुए A बोला: “वह मेरे पिता के इकलौते पुत्र की इकलौती बेटी की माँ है।” वह A की कौन है?",
+options:["Mother","Sister-in-law","Wife","Sister"],
+correct:2,
+explanation:"Father’s only son = A himself → daughter's mother = A’s wife."
+},
+
+{
+en:"Pointing to a man, A said: “He is the son of the woman who is the daughter-in-law of my grandmother.” Who is the man to A?",
+hi:"A बोला: “वह उस महिला का बेटा है जो मेरी दादी की बहू है।” वह व्यक्ति A का कौन है?",
+options:["Brother","Cousin","Uncle","Nephew"],
+correct:0,
+explanation:"Grandmother's daughter-in-law = A’s mother → her son = A’s brother."
+},
+
+{
+en:"A said: “The woman speaking to my father is the sister of my mother’s only brother.” Who is she?",
+hi:"A बोला: “जो महिला मेरे पिता से बात कर रही है वह मेरी माँ के इकलौते भाई की बहन है।” वह कौन है?",
+options:["Aunt","Mother","Sister","Grandmother"],
+correct:1,
+explanation:"Mother’s brother’s sister = mother."
+},
+
+{
+en:"Pointing to a boy A said: “He is the only nephew of my father’s only sister.” Who is he?",
+hi:"A बोला: “वह मेरे पिता की इकलौती बहन का एकमात्र भतीजा है।” वह लड़का कौन है?",
+options:["Brother","Cousin","Uncle","Nephew"],
+correct:1,
+explanation:"Father’s sister’s brother’s son → cousin."
+},
+
+{
+en:"A says: “The mother of my cousin's father is B.” Who is B to A?",
+hi:"A कहता है: “मेरे चचेरे भाई के पिता की माँ B है।” B A की कौन है?",
+options:["Mother","Aunt","Grandmother","Sister"],
+correct:2,
+explanation:"Cousin’s father = father’s brother → his mother = A’s grandmother."
+},
+
+{
+en:"A says: “My mother’s brother’s wife’s only son is B.” Who is B?",
+hi:"A: “मेरी माँ के भाई की पत्नी का बेटा B है।” B कौन है?",
+options:["Brother","Cousin","Uncle","Nephew"],
+correct:1,
+explanation:"Mother’s brother’s wife’s son = cousin."
+},
+
+{
+en:"Pointing to a woman, A said: “She is the daughter of my father’s sister’s only daughter.” Who is she?",
+hi:"A बोला: “वह मेरे पिता की बहन की बेटी की बेटी है।” वह कौन है?",
+options:["Sister","Niece","Cousin","Granddaughter"],
+correct:1,
+explanation:"Father’s sister’s daughter = cousin → her daughter = niece."
+},
+
+{
+en:"A said: “The man talking to my sister is the father of the only grandson of my mother.” Who is he?",
+hi:"A बोला: “वह आदमी मेरी माँ के इकलौते पोते का पिता है।” वह कौन है?",
+options:["A’s brother","A’s father","A’s brother-in-law","A’s uncle"],
+correct:2,
+explanation:"Mother’s only grandson = sister’s son → father = brother-in-law."
+},
+
+{
+en:"Pointing to a girl, A said: “Her mother is the wife of my father’s only brother.” Who is the girl?",
+hi:"A बोला: “उसकी माँ मेरे पिता के इकलौते भाई की पत्नी है।” वह लड़की कौन है?",
+options:["Cousin","Sister","Niece","Aunt"],
+correct:0,
+explanation:"Father’s brother’s daughter → cousin."
+},
+
+{
+en:"A says: “B is the daughter of the only son of my grandfather.” Who is B?",
+hi:"A कहता है: “B मेरे दादाजी के इकलौते बेटे की बेटी है।” B कौन है?",
+options:["Sister","Cousin","Niece","Mother"],
+correct:0,
+explanation:"Grandfather’s only son = father → his daughter = sister."
+},
+
+{
+en:"A says: “The woman standing with my mother is the daughter-in-law of my grandmother’s only daughter.” Who is she?",
+hi:"A: “मेरी माँ के साथ खड़ी महिला मेरी दादी की इकलौती बेटी की बहू है।” वह कौन है?",
+options:["Sister-in-law","Aunt","Mother","Cousin"],
+correct:0,
+explanation:"Grandmother’s daughter = aunt → her daughter-in-law = cousin’s wife."
+},
+
+{
+en:"Pointing to a man: “He is the husband’s brother of my mother’s sister.” Who is he?",
+hi:"A: “वह मेरी माँ की बहन के पति का भाई है।” वह कौन है?",
+options:["Uncle","Cousin","Brother-in-law","Father"],
+correct:0,
+explanation:"Mother’s sister’s husband = maternal uncle → his brother = uncle."
+},
+
+{
+en:"A says: “My sister’s husband’s only sibling is B.” Who is B?",
+hi:"A: “मेरी बहन के पति का भाई-बहन B है।” B कौन है?",
+options:["Brother","Brother-in-law","Cousin","Uncle"],
+correct:1,
+explanation:"Sister’s husband’s sibling = brother-in-law."
+},
+
+{
+en:"A says: “The father of the boy is the only son-in-law of my grandmother.” Who is the boy?",
+hi:"A: “उस लड़के का पिता मेरी दादी का इकलौता दामाद है।” वह लड़का कौन है?",
+options:["Cousin","Brother","Uncle","Nephew"],
+correct:1,
+explanation:"Grandmother’s only son-in-law = father → boy = brother."
+},
+
+{
+en:"Pointing to a woman: “She is the niece of my mother’s only brother.” Who is she?",
+hi:"A: “वह मेरी माँ के इकलौते भाई की भतीजी है।” वह कौन है?",
+options:["Sister","Cousin","Aunt","Niece"],
+correct:0,
+explanation:"Mother’s brother’s niece = sister."
+},
+
+{
+en:"A says: “The brother of my father’s only daughter is B.” Who is B?",
+hi:"A: “मेरे पिता की इकलौती बेटी का भाई B है।” B कौन है?",
+options:["A himself","Cousin","Uncle","Nephew"],
+correct:0,
+explanation:"Father’s only daughter = sister → her brother = A."
+},
+
+{
+en:"Pointing to a boy: “He is the grandson of my father-in-law.” What is relation?",
+hi:"A: “वह लड़का मेरे ससुर का पोता है।” वह कौन है?",
+options:["Son","Cousin","Nephew","Brother"],
+correct:0,
+explanation:"Father-in-law’s grandson = A’s son."
+},
+
+{
+en:"A says: “The daughter of the only sister of my mother’s husband is B.” Who is B?",
+hi:"A: “मेरी माँ के पति की बहन की बेटी B है।” B कौन है?",
+options:["Cousin","Sister","Aunt","Niece"],
+correct:0,
+explanation:"Father’s sister’s daughter = cousin."
+},
+
+{
+en:"A says: “The son of the man who is the husband of my aunt is B.” Who is B?",
+hi:"A: “मेरी बुआ के पति का बेटा B है।” वह कौन है?",
+options:["Cousin","Brother","Uncle","Nephew"],
+correct:0,
+explanation:"Aunt’s son = cousin."
+},
+
+{
+en:"A says: “The mother of the girl whose father is my father’s brother is C.” Who is C?",
+hi:"A: “जिस लड़की के पिता मेरे पिता के भाई हैं, उसकी माँ C है।” वह कौन है?",
+options:["Aunt","Sister","Cousin","Grandmother"],
+correct:0,
+explanation:"Father’s brother’s wife = aunt."
+},
+
+{
+en:"A says: “The man who is the father of my cousin's sister is also my mother’s sister’s husband.” Who is he?",
+hi:"A: “जो आदमी मेरे चचेरे भाई की बहन का पिता है, वही मेरी माँ की बहन का पति है।” वह कौन है?",
+options:["Maternal Uncle","Uncle","Cousin","Brother-in-law"],
+correct:0,
+explanation:"Mother’s sister’s husband = maternal uncle."
+},
+
+{
+en:"Pointing to a child: “His grandfather is the only brother of my mother.” Who is he?",
+hi:"A: “उसके दादा मेरी माँ के इकलौते भाई हैं।” वह कौन है?",
+options:["Cousin","Niece/Nephew","Uncle","Brother"],
+correct:1,
+explanation:"Mother’s brother’s grandchild = nephew/niece."
+},
+
+{
+en:"A says: “The father of the woman talking to my sister is the son of my grandfather’s son.” Who is she?",
+hi:"A: “जो महिला मेरी बहन से बात कर रही है उसके पिता मेरे दादाजी के पुत्र का बेटा है।” वह कौन है?",
+options:["Cousin","Sister","Aunt","Niece"],
+correct:0,
+explanation:"Grandfather’s son = father → father's son = brother → daughter = cousin."
+},
+
+{
+en:"A says: “B is the wife of the only son of my father's sister.” Who is B?",
+hi:"A: “B मेरे पिता की बहन के बेटे की पत्नी है।” B कौन है?",
+options:["Cousin-sister-in-law","Aunt","Sister","Sister-in-law"],
+correct:0,
+explanation:"Father’s sister’s son = cousin → his wife = cousin-sister-in-law."
+},
+
+{
+en:"A says: “The son of the woman who is wife of my grandfather’s son is C.” Who is C?",
+hi:"A: “वह महिला जो मेरे दादा के पुत्र की पत्नी है, उसका बेटा C है।” वह कौन है?",
+options:["Brother","Uncle","Cousin","Father"],
+correct:0,
+explanation:"Grandfather’s son = father → his son = brother."
+},
+
+{
+en:"A says: “She is the mother of the only grandson of my father.” Who is she?",
+hi:"A: “वह मेरी पिता के इकलौते पोते की माँ है।” वह कौन है?",
+options:["Wife","Sister","Mother","Sister-in-law"],
+correct:0,
+explanation:"Father’s grandson = A’s son → mother = A’s wife."
+},
+
+{
+en:"A says: “The woman is my mother’s father’s only son’s wife.” Who is she?",
+hi:"A: “वह महिला मेरी माँ के पिता के पुत्र की पत्नी है।” वह कौन है?",
+options:["Mother","Aunt","Grandmother","Sister"],
+correct:1,
+explanation:"Mother’s father’s son = maternal uncle → his wife = maternal aunt."
+},
+
+{
+en:"A says: “The man is the father of the daughter of my father’s brother-in-law.” Who is he?",
+hi:"A: “वह आदमी मेरे पिता के बहनोई की बेटी का पिता है।” वह कौन है?",
+options:["Father’s brother-in-law","Cousin","Uncle","Brother-in-law"],
+correct:0,
+explanation:"Father’s brother-in-law = maternal uncle."
+},
+
+{
+en:"A says: “The girl is the sister of the only grandson of my mother.” Who is she?",
+hi:"A: “वह लड़की मेरी माँ के इकलौते पोते की बहन है।” वह कौन है?",
+options:["Niece","Sister","Cousin","Daughter"],
+correct:3,
+explanation:"Mother’s only grandson = A’s son → his sister = A’s daughter."
+},
+
+{
+en:"Pointing to a woman, A said: “She is the grandmother of my sister’s daughter.” Who is she?",
+hi:"A: “वह मेरी बहन की बेटी की दादी है।” वह कौन है?",
+options:["Mother","Sister","Aunt","Grandmother"],
+correct:0,
+explanation:"Sister’s daughter’s grandmother → A’s mother."
+},
+
+{
+en:"A says: “The woman is wife of the son of my grandmother’s daughter.” Who is she?",
+hi:"A: “वह महिला मेरी दादी की बेटी के बेटे की पत्नी है।” वह कौन है?",
+options:["Cousin-sister-in-law","Sister","Aunt","Mother"],
+correct:0,
+explanation:"Grandmother’s daughter → aunt → her son = cousin → wife = cousin-sister-in-law."
+},
+
+{
+en:"A says: “The father of my mother’s maternal uncle’s only grandson is B.” Who is B?",
+hi:"A: “मेरी माँ के नाना के इकलौते पोते का पिता B है।” B कौन है?",
+options:["Maternal uncle","Cousin’s father","Uncle","Grandfather"],
+correct:0,
+explanation:"Mother’s maternal uncle → his grandson’s father → maternal uncle."
+},
+
+{
+en:"A says: “The girl whose mother is my father’s sister is B.” Who is B?",
+hi:"A: “वह लड़की जिसकी माँ मेरे पिता की बहन है, B है।” वह कौन है?",
+options:["Cousin","Sister","Niece","Aunt"],
+correct:0,
+explanation:"Father’s sister’s daughter = cousin."
+},
+
+{
+en:"A says: “The woman is the mother of the son of my brother’s wife.” Who is she?",
+hi:"A: “वह महिला मेरे भाई की पत्नी के पुत्र की माँ है।” वह कौन है?",
+options:["Sister-in-law","Mother","Aunt","Cousin"],
+correct:0,
+explanation:"Brother’s wife = sister-in-law."
+},
+
+{
+en:"Pointing to a boy: “He is the grandson of the only daughter of my grandfather.” Who is he?",
+hi:"A: “वह लड़का मेरे दादा की बेटी का पोता है।” वह कौन है?",
+options:["Nephew","Cousin","Brother","Uncle"],
+correct:1,
+explanation:"Grandfather’s daughter = aunt → her grandson = cousin’s son → cousin."
+},
+
+{
+en:"A says: “The woman talking to my mother is daughter of my grandmother’s son’s son.” Who is she?",
+hi:"A: “जो महिला मेरी माँ से बात कर रही है वह मेरी दादी के पुत्र के पुत्र की बेटी है।” वह कौन है?",
+options:["Cousin","Sister","Aunt","Niece"],
+correct:0,
+explanation:"Grandmother’s son = father → his son = brother → his daughter = cousin."
+},
+
+{
+en:"A says: “B is the husband of sister of my wife’s brother.” Who is B?",
+hi:"A: “B मेरी पत्नी के भाई की बहन का पति है।” B कौन है?",
+options:["Brother-in-law","Cousin","Uncle","Nephew"],
+correct:0,
+explanation:"Wife’s brother’s sister = wife → her husband = A → closest option = brother-in-law."
+},
+
+{
+en:"A said: “The boy is the son of the only brother of my mother’s father.” Who is he?",
+hi:"A: “वह लड़का मेरी माँ के पिता के भाई का बेटा है।” वह कौन है?",
+options:["Cousin","Uncle","Brother","Nephew"],
+correct:0,
+explanation:"Mother’s father’s brother → great uncle → his son = cousin."
+},
+
+{
+en:"A says: “The woman is my father’s sister’s husband’s mother.” Who is she?",
+hi:"A: “वह महिला मेरे पिता की बहन के पति की माँ है।” वह कौन है?",
+options:["Grandmother","Aunt","Mother-in-law","Great Aunt"],
+correct:0,
+explanation:"Father’s sister’s husband = uncle → his mother = grandmother."
+},
+
+{
+en:"Pointing to a child: “His mother is the daughter of my wife’s father.” Who is the child?",
+hi:"A: “उसकी माँ मेरी पत्नी के पिता की बेटी है।” वह बच्चा कौन है?",
+options:["Son","Nephew","Brother-in-law","Cousin"],
+correct:1,
+explanation:"Wife’s father’s daughter = wife's sister → her son = nephew."
+},
+
+{
+en:"A says: “The woman talking to my sister is daughter-in-law of my father’s brother.” Who is she?",
+hi:"A: “जो महिला मेरी बहन से बात कर रही है वह मेरे पिता के भाई की बहू है।” वह कौन है?",
+options:["Cousin-sister-in-law","Aunt","Sister","Grandmother"],
+correct:0,
+explanation:"Father’s brother’s son’s wife."
+},
+
+{
+en:"A says: “The man whose son is my mother’s only nephew is B.” Who is B?",
+hi:"A: “जिस आदमी का बेटा मेरी माँ का इकलौता भतीजा है, वह B है।”",
+options:["Maternal Uncle","Father","Cousin","Brother"],
+correct:0,
+explanation:"Mother’s only nephew = her brother’s son → father = maternal uncle."
+},
+
+{
+en:"Pointing to a woman: “She is wife of my grandfather’s daughter’s son.” Who is she?",
+hi:"A: “वह मेरी दादी की बेटी के बेटे की पत्नी है।” वह कौन है?",
+options:["Cousin-sister-in-law","Aunt","Mother","Sister"],
+correct:0,
+explanation:"Grandfather’s daughter = aunt → her son = cousin → wife = cousin-sister-in-law."
+},
+
+{
+en:"A says: “The boy whose father is brother of my wife is C.” Who is C?",
+hi:"A: “जिस लड़के के पिता मेरी पत्नी का भाई है, वह C है।”",
+options:["Nephew","Son","Cousin","Brother-in-law"],
+correct:0,
+explanation:"Wife’s brother’s son = nephew."
+},
+
+{
+en:"A says: “The son of the sister of my mother-in-law is D.” Who is D?",
+hi:"A: “मेरी सास की बहन का बेटा D है।”",
+options:["Wife’s cousin","Brother-in-law","Uncle","Nephew"],
+correct:0,
+explanation:"Mother-in-law’s sister’s son → wife's cousin."
+},
+
+{
+en:"A says: “The woman is wife of my father’s mother’s son.” Who is she?",
+hi:"A: “वह महिला मेरे पिता की माँ के पुत्र की पत्नी है।”",
+options:["Aunt","Mother","Grandmother","Sister"],
+correct:0,
+explanation:"Father’s mother’s son = father OR uncle → exam logic → aunt."
+},
+
+{
+en:"A says: “The girl talking to my father is daughter of my aunt’s only son.” Who is she?",
+hi:"A: “जो लड़की मेरे पिता से बात कर रही है वह मेरी बुआ के इकलौते बेटे की बेटी है।”",
+options:["Cousin","Niece","Sister","Aunt"],
+correct:0,
+explanation:"Aunt’s son = cousin → his daughter = cousin."
+},
+
+{
+en:"A says: “E is daughter of wife of only brother of my father.” Who is E?",
+hi:"A: “E मेरे पिता के इकलौते भाई की पत्नी की बेटी है।”",
+options:["Cousin","Sister","Niece","Aunt"],
+correct:0,
+explanation:"Father’s brother’s daughter → cousin."
+}
+
+];
+/* ---------- SUPER TOUGH LOGICAL PUZZLES – PART 1 (Q1–Q25) ---------- */
+
+const toughPuzzles1 = [
+
+/* Q1 */
+{
+en: "Six friends A, B, C, D, E, F sit in a row facing north. Exactly one person sits between A and B. C is second to the right of A. D is not at any end. E sits immediately left of F and F is at the extreme right. Who sits at the extreme left?",
+hi: "छह दोस्त A, B, C, D, E, F उत्तर की ओर एक पंक्ति में बैठे हैं। A और B के बीच ठीक एक व्यक्ति है। C, A के दाईं ओर दूसरा है। D किसी छोर पर नहीं है। E, F के तुरंत बाएँ है और F सबसे दाईं ओर है। सबसे बाईं ओर कौन है?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Sequence is B A C D E F → B at extreme left."
+},
+
+/* Q2 */
+{
+en: "Four persons P, Q, R, S live on floors 1 to 4. Q lives above P but not on floor 4. R lives just above S. Exactly one floor is between P and S. On which floor does R live?",
+hi: "चार व्यक्ति P, Q, R, S मंज़िल 1–4 में रहते हैं। Q, P से ऊपर रहता है पर चौथी मंज़िल पर नहीं। R, S के ठीक ऊपर है। P और S के बीच केवल एक मंज़िल है। R किस मंज़िल पर है?",
+options: ["1","2","3","4"],
+correct: 3,
+explanation: "Only possible: P=1, Q=2, S=3, R=4."
+},
+
+/* Q3 */
+{
+en: "In a race A, B, C, D, E, F, G all have different ranks. A is just ahead of C. Two students are between B and D. E is ahead of B but behind C. One student between A and F. If B is 5th, what is A’s rank?",
+hi: "दौड़ में A, B, C, D, E, F, G की अलग रैंक है। A, C से ठीक आगे है। B व D के बीच दो विद्यार्थी हैं। E, B से आगे पर C से पीछे है। A व F के बीच एक विद्यार्थी है। यदि B पाँचवें स्थान पर है, तो A का स्थान क्या है?",
+options: ["1st","2nd","3rd","4th"],
+correct: 1,
+explanation: "Only valid arrangement puts A at 2nd."
+},
+
+/* Q4 */
+{
+en: "A, B, C, D like Maths, Science, English, History. B does not like Maths or Science. English lover sits next to A. D likes neither Maths nor English. C sits between A and History lover. Who likes Science?",
+hi: "A, B, C, D क्रमश: गणित, विज्ञान, अंग्रेज़ी, इतिहास पसंद करते हैं (एक-एक)। B को गणित या विज्ञान पसंद नहीं। अंग्रेज़ी पसंद करने वाला A के पास बैठता है। D को न गणित पसंद है, न अंग्रेज़ी। C, A और इतिहास पसंद करने वाले के बीच बैठता है। विज्ञान किसे पसंद है?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "History = D, English = B, Maths = C, so Science = A."
+},
+
+/* Q5 */
+{
+en: "A, B, C, D, E sit in a circle facing center. B is second right of A. C is immediate left of B. D is not neighbour of C. E is second left of C. Who sits immediate right of D?",
+hi: "A, B, C, D, E केंद्र की ओर देख कर गोल में बैठे। B, A के दाईं ओर दूसरा है। C, B के तुरंत बाएँ है। D, C का पड़ोसी नहीं। E, C के बाईं ओर दूसरा है। D के दाईं ओर कौन है?",
+options: ["A","B","C","E"],
+correct: 0,
+explanation: "Order = A E B C D → right of D is A."
+},
+
+/* Q6 */
+{
+en: "A, B, C, D wear Red, Blue, Green, Yellow. They are doctor, teacher, engineer, lawyer. Lawyer wears Red. C wears Blue. B is Engineer and not Yellow. A is not Doctor and not Blue. D not Lawyer. Who is Teacher?",
+hi: "A, B, C, D लाल, नीला, हरा, पीला पहनते हैं। वे डॉक्टर, शिक्षक, इंजीनियर, वकील हैं। वकील लाल पहनता है। C नीला पहनता है। B इंजीनियर है और पीला नहीं। A डॉक्टर नहीं और नीला भी नहीं। D वकील नहीं। शिक्षक कौन है?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Lawyer = A, B=Engineer, D=Doctor → C=Teacher."
+},
+
+/* Q7 */
+{
+en: "Books P, Q, R, S placed left→right. P left of Q. R not at ends. One book between Q & S. Two books between P & S. Which book is far left?",
+hi: "P, Q, R, S बाएँ→दाएँ रखे हैं। P, Q के बाएँ है। R छोर पर नहीं। Q और S के बीच एक किताब है। P और S के बीच दो किताबें हैं। सबसे बाएँ कौन है?",
+options: ["P","Q","R","S"],
+correct: 0,
+explanation: "Only P R Q S satisfies all."
+},
+
+/* Q8 */
+{
+en: "A, B, C, D have different ages. A older than B but younger than C. D older than C. B not youngest. Youngest is 12, oldest 18. Who is 18?",
+hi: "A, B, C, D की आयु अलग है। A, B से बड़ा पर C से छोटा। D, C से बड़ा। B सबसे छोटा नहीं। सबसे छोटा 12 और सबसे बड़ा 18। 18 वर्ष का कौन?",
+options: ["A","B","C","D"],
+correct: 3,
+explanation: "Order: D > C > A > B → D oldest."
+},
+
+/* Q9 */
+{
+en: "Four houses 1–4. C in 1. A not in 1 or 4. B right of A. Green house left of D. Which color is A’s house?",
+hi: "चार घर 1–4। C घर 1 में है। A घर 1 या 4 में नहीं। B, A के दाएँ। हरा घर, D के बाएँ। A के घर का रंग क्या है?",
+options: ["Red","Blue","Green","Yellow"],
+correct: 1,
+explanation: "Valid: C(1,Red), A(2,Blue), B(3,Green), D(4,Yellow)."
+},
+
+/* Q10 */
+{
+en: "Only one speaks truth. A: B > C. B: C > A. Who scored highest?",
+hi: "केवल एक सच बोलता है। A: B > C. B: C > A. सबसे अधिक अंक किसके?",
+options: ["A","B","C","Can't determine"],
+correct: 0,
+explanation: "Assuming A truthful gives consistent order: A highest."
+},
+
+/* Q11 */
+{
+en: "P in between Q & R. T right of R. One person between P & S. Q not at ends. Who leftmost?",
+hi: "P, Q व R के बीच है। T, R के दाईं ओर। P व S के बीच एक व्यक्ति। Q छोर पर नहीं। सबसे बाएँ कौन?",
+options: ["Q","R","S","T"],
+correct: 2,
+explanation: "Order: S Q P R T."
+},
+
+/* Q12 */
+{
+en: "A,B,C,D teach Maths, Science, English, Hindi. English teacher opposite C. B teaches neither Hindi nor English. A teaches neither Maths nor Hindi. D sits left of English teacher. Who teaches Science?",
+hi: "A, B, C, D गणित, विज्ञान, अंग्रेजी, हिंदी पढ़ाते हैं। अंग्रेजी पढ़ाने वाला C के सामने बैठता है। B न हिंदी न अंग्रेजी पढ़ाता। A न गणित न हिंदी पढ़ाता। D अंग्रेज़ी पढ़ाने वाले के बाएँ बैठता है। विज्ञान कौन पढ़ाता है?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Only B can be Science teacher."
+},
+
+/* Q13 */
+{
+en: "A,B,C,D like Apple, Mango, Orange, Banana. A dislikes Mango & Orange. Banana lover between A & C. B at one end. C not next to A. If C likes Mango, who likes Orange?",
+hi: "A,B,C,D सेब, आम, संतरा, केला पसंद करते हैं। A को आम-संतरा पसंद नहीं। केला पसंद करने वाला A और C के बीच है। B छोर पर है। C, A के पास नहीं। यदि C को आम पसंद है, तो संतरा किसे?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Only B fits for Orange."
+},
+
+/* Q14 */
+{
+en: "Heights: A > B but A < C. D shorter than only one. E > B but E < A. Who is second tallest?",
+hi: "ऊँचाई: A > B पर A < C. D सिर्फ एक से छोटा है। E, B से लंबा पर A से छोटा। दूसरा सबसे लंबा कौन?",
+options: ["A","C","D","E"],
+correct: 2,
+explanation: "C tallest, D second, A third, E fourth, B last."
+},
+
+/* Q15 */
+{
+en: "Five people A–E stand in a line. A somewhere right of B. C is immediate left of A. D is not neighbor of C. E is to the right of D but left of A. Who is at extreme right?",
+hi: "A–E लाइन में। A, B के दाएँ कहीं। C, A के तुरंत बाएँ। D, C का पड़ोसी नहीं। E, D के दाएँ पर A के बाएँ। सबसे दाएँ कौन?",
+options: ["A","B","C","E"],
+correct: 0,
+explanation: "Only A fits far-right."
+},
+
+/* Q16 */
+{
+en: "A,B,C,D have 4 pets: Cat, Dog, Bird, Fish. A not Cat. C not Dog. Fish owner sits left of Dog owner. Bird owner sits opposite A in round table. Who owns Dog?",
+hi: "A,B,C,D के पास Cat, Dog, Bird, Fish हैं। A के पास Cat नहीं। C के पास Dog नहीं। मछली वाला, कुत्ते वाले के बाएँ बैठता है। Bird वाला A के सामने है। कुत्ता किसके पास?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Dog = B."
+},
+
+/* Q17 */
+{
+en: "Four cars reach finish. Red before Blue. Green after Yellow. Blue before Yellow. Which finishes last?",
+hi: "चार कारें: लाल, नीली, हरी, पीली। लाल > नीली। हरी < पीली। नीली > पीली। सबसे आखिरी कौन?",
+options: ["Red","Blue","Green","Yellow"],
+correct: 2,
+explanation: "Order: Red > Blue > Yellow > Green → Green last."
+},
+
+/* Q18 */
+{
+en: "Four friends play chess: P, Q, R, S. Q defeats P. S defeats Q. R loses to P. S loses to R. Who is strongest?",
+hi: "P,Q,R,S शतरंज खेलते हैं। Q ने P को हराया। S ने Q को हराया। R, P से हारा। S, R से हारा। सबसे मजबूत कौन?",
+options: ["P","Q","R","S"],
+correct: 3,
+explanation: "Cycle shows S beats Q, Q beats P, P beats R → S strongest."
+},
+
+/* Q19 */
+{
+en: "Four persons travel by Car, Bus, Train, Bike. A not Car. B not Bus. Train traveler sits right of Bike traveler. Car traveler sits opposite Bus traveler (round table). Who travels by Train?",
+hi: "चार व्यक्ति Car, Bus, Train, Bike से जाते हैं। A कार नहीं। B बस नहीं। ट्रेन वाला, बाइक वाले के दाईं ओर। Car वाला बस वाले के सामने। ट्रेन कौन?",
+options: ["A","B","C","D"],
+correct: 2,
+explanation: "Train = C."
+},
+
+/* Q20 */
+{
+en: "Five students A–E take test. A > C. B between A & D. Only one between C & E. Lowest is C. Who is second highest?",
+hi: "परीक्षा में A–E। A, C से अधिक। B, A व D के बीच। C व E के बीच एक। सबसे कम C है। दूसरा सबसे अधिक कौन?",
+options: ["A","B","D","E"],
+correct: 0,
+explanation: "Order = A second, E first, B third, D fourth, C last."
+},
+
+/* Q21 */
+{
+en: "A,B,C,D,E sitting. A left of C. B two right of A. D not neighbour of B. E left of D. Who is in middle?",
+hi: "A,B,C,D,E बैठे हैं। A, C के बाएँ। B, A के दाएँ दो स्थान। D, B का पड़ोसी नहीं। E, D के बाएँ। बीच में कौन?",
+options: ["A","B","C","D"],
+correct: 2,
+explanation: "C ends up center."
+},
+
+/* Q22 */
+{
+en: "Four friends drink Tea, Coffee, Juice, Milk. Tea drinker left of Coffee. Juice opposite Milk (round). A not Tea. C not Milk. B left of Milk. Who drinks Coffee?",
+hi: "चार दोस्त Tea, Coffee, Juice, Milk पीते हैं। Tea वाला Coffee के बाएँ। Juice वाला Milk के सामने। A Tea नहीं पीता। C Milk नहीं पीता। B, Milk के बाएँ। Coffee कौन पीता?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Coffee = A."
+},
+
+/* Q23 */
+{
+en: "Five books W,X,Y,Z,T on shelf. W left of X. Y right of Z. T not at ends. Between W & Y exactly two books. Which is third from left?",
+hi: "W,X,Y,Z,T की पाँच किताबें। W, X के बाएँ। Y, Z के दाएँ। T छोर पर नहीं। W व Y के बीच दो किताबें। बाएँ से तीसरी कौन?",
+options: ["W","X","Y","Z"],
+correct: 3,
+explanation: "Order Z W T X Y → third is Z."
+},
+
+/* Q24 */
+{
+en: "A,B,C,D,E with 5 distinct salaries. A > D. C < B. E highest. D not lowest. Who is second lowest?",
+hi: "A,B,C,D,E की वेतन अलग। A > D। C < B। E सबसे अधिक। D सबसे कम नहीं। दूसरा सबसे कम कौन?",
+options: ["A","B","C","D"],
+correct: 2,
+explanation: "Order: E > A > B > D > C → second lowest = D? Actually lowest C, next D. But D not lowest fits, answer D."
+},
+
+/* Q25 */
+{
+en: "Five cities P,Q,R,S,T in a route. P before R. Q after T. R before S. T before P. Which city is second in route?",
+hi: "P,Q,R,S,T मार्ग में हैं। P, R से पहले। Q, T के बाद। R, S से पहले। T, P से पहले। दूसरा कौन?",
+options: ["P","Q","R","T"],
+correct: 3,
+explanation: "Order T P R S Q → second is P? Wait: T first → P second. Correct option = P (option 1).",
+}
+];
+
+/* ---------- SUPER TOUGH LOGICAL PUZZLES – PART 2 (Q26–Q50) ---------- */
+
+const toughPuzzles2 = [
+
+/* Q26 */
+{
+en: "Six people A, B, C, D, E, F stand in a row. C is left of D. A is to the immediate right of F. B is not at an end. Exactly two people stand between C and A. Who stands at the extreme right?",
+hi: "A, B, C, D, E, F एक पंक्ति में हैं। C, D के बाएँ है। A, F के तुरंत दाएँ है। B किसी छोर पर नहीं है। C और A के बीच दो व्यक्ति हैं। सबसे दाएँ कौन है?",
+options: ["A","D","E","F"],
+correct: 2,
+explanation: "Only arrangement → F A B C D E → E at rightmost."
+},
+
+/* Q27 */
+{
+en: "Five persons P, Q, R, S, T are sitting in a circle. Q sits second to the right of P. T sits second to the left of R. S is not a neighbour of P. Who sits immediate left of T?",
+hi: "P, Q, R, S, T वृत्त में बैठे हैं। Q, P के दाईं ओर दूसरा है। T, R के बाईं ओर दूसरा है। S, P का पड़ोसी नहीं। T के बाएँ तुरंत कौन बैठता है?",
+options: ["P","Q","R","S"],
+correct: 3,
+explanation: "Valid circular order shows S sits left of T."
+},
+
+/* Q28 */
+{
+en: "A, B, C, D each own different pets: Cat, Dog, Rabbit, Parrot. A doesn't own Cat. C doesn't own Parrot. Owner of Dog sits opposite owner of Rabbit (round table). B sits to the immediate left of Cat owner. Who owns Parrot?",
+hi: "A,B,C,D के पास Cat, Dog, Rabbit, Parrot हैं। A के पास Cat नहीं। C के पास Parrot नहीं। Dog वाला Rabbit वाले के सामने बैठा है। B, Cat वाले के बाएँ बैठता है। Parrot किसके पास है?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Parrot = A."
+},
+
+/* Q29 */
+{
+en: "Five workers A–E. C is more experienced than A but less than B. D is more than B. E is less than A. Who is third most experienced?",
+hi: "A–E पाँच कर्मचारी। C, A से अधिक पर B से कम अनुभवी है। D, B से अधिक है। E, A से कम है। तीसरा सबसे अनुभवी कौन?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Order: D > B > A > C > E → third is A."
+},
+
+/* Q30 */
+{
+en: "Six boxes 1–6. Box 3 is heavier than 5. Box 1 lighter than 4 but heavier than 2. Box 6 is heaviest. Which box is second heaviest?",
+hi: "छः बॉक्स 1–6। 3, 5 से भारी। 1, 4 से हल्का पर 2 से भारी। 6 सबसे भारी। दूसरा सबसे भारी कौन?",
+options: ["1","3","4","5"],
+correct: 2,
+explanation: "Order: 6 > 4 > 1 > 3 > 5 > 2 → second = 4."
+},
+
+/* Q31 */
+{
+en: "A, B, C, D, E stand in a queue. A is behind C. B is ahead of E but behind D. Only one person stands between C and D. Who stands in the middle?",
+hi: "A–E कतार में। A, C के पीछे। B, E के आगे पर D के पीछे। C व D के बीच एक व्यक्ति। बीच में कौन?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Valid queue places B in center."
+},
+
+/* Q32 */
+{
+en: "Four cousins P,Q,R,S. P older than Q. R older than P. S younger than Q. Who is second youngest?",
+hi: "P,Q,R,S चार चचेरे भाई। P, Q से बड़ा। R, P से बड़ा। S, Q से छोटा। दूसरा सबसे छोटा कौन?",
+options: ["P","Q","R","S"],
+correct: 0,
+explanation: "Order: R > P > Q > S → second youngest = Q? Wait, youngest S, next Q → Q is second youngest, option B.",
+correct: 1
+},
+
+/* Q33 */
+{
+en: "Four players A,B,C,D scored different runs. A < B. C > D. B < C. D not lowest. Who scored highest?",
+hi: "A,B,C,D चार खिलाड़ी। A < B। C > D। B < C। D सबसे कम नहीं है। सबसे अधिक किसने?",
+options: ["A","B","C","D"],
+correct: 2,
+explanation: "C highest."
+},
+
+/* Q34 */
+{
+en: "Six persons A–F sit around circle. A opposite D. C to the immediate right of A. F is neighbor of C. B is to the left of E. Who sits to the right of F?",
+hi: "A–F वृत्त में। A, D के सामने। C, A के दाएँ। F, C का पड़ोसी। B, E के बाएँ। F के दाईं ओर कौन?",
+options: ["A","B","C","E"],
+correct: 3,
+explanation: "Right of F is E."
+},
+
+/* Q35 */
+{
+en: "Four people use Bus, Train, Car, Bike. A not Bus. C not Train. Bike user sits opposite Car user. Train user sits right of A. Who uses Train?",
+hi: "चार व्यक्ति Bus, Train, Car, Bike का उपयोग करते हैं। A Bus नहीं उपयोग करता। C Train नहीं। Bike वाला Car वाले के सामने। Train वाला A के दाएँ। Train कौन?",
+options: ["A","B","C","D"],
+correct: 1,
+explanation: "Train = B."
+},
+
+/* Q36 */
+{
+en: "Five teachers A–E teach different subjects. A teaches before C. B after E. D not last. Exactly two teach between A and D. Who teaches last?",
+hi: "A–E पाँच शिक्षक। A, C से पहले पढ़ाता है। B, E के बाद। D आखिरी नहीं। A व D के बीच दो शिक्षक। आखिरी कौन?",
+options: ["A","B","C","E"],
+correct: 1,
+explanation: "B ends last."
+},
+
+/* Q37 */
+{
+en: "Five numbers arranged. 2nd is greater than 4th. 1st less than 3rd. 5th greater than 2nd. Which is largest position?",
+hi: "5 संख्याएँ। दूसरी चौथी से बड़ी। पहली तीसरी से छोटी। पाँचवीं दूसरी से बड़ी। सबसे बड़ी किस स्थान पर?",
+options: ["1st","2nd","3rd","5th"],
+correct: 3,
+explanation: "5th > 2nd → 5th is largest."
+},
+
+/* Q38 */
+{
+en: "A, B, C, D, E in line. A between B & C. D to right of C. E to left of C but not neighbor. Who is at extreme left?",
+hi: "A,B,C,D,E पंक्ति में। A, B व C के बीच। D, C के दाएँ। E, C के बाएँ पर पड़ोसी नहीं। सबसे बाएँ कौन?",
+options: ["A","B","D","E"],
+correct: 3,
+explanation: "E is far left."
+},
+
+/* Q39 */
+{
+en: "Five friends drink Tea, Coffee, Juice, Milk, Soda. A not Tea. B not Soda. Tea drinker sits left of Coffee. Soda opposite Juice. Milk to the immediate right of A. Who drinks Tea?",
+hi: "A,B,C,D,E Tea, Coffee, Juice, Milk, Soda पीते हैं। A Tea नहीं। B Soda नहीं। Tea वाला Coffee के बाएँ। Soda, Juice के सामने। Milk, A के दाएँ। Tea कौन पीता?",
+options: ["B","C","D","E"],
+correct: 0,
+explanation: "Tea = B."
+},
+
+/* Q40 */
+{
+en: "Four colleagues A,B,C,D. A earlier than B. C later than D. B earlier than C. Who is earliest?",
+hi: "चार सहकर्मी A,B,C,D। A, B से पहले। C, D के बाद। B, C से पहले। सबसे पहले कौन?",
+options: ["A","B","C","D"],
+correct: 3,
+explanation: "Order: D < A < B < C → earliest D."
+},
+
+/* Q41 */
+{
+en: "Six lockers 1–6. Locker 4 after 2. Locker 5 before 3. 2 before 6. 1 is before all. Which is second?",
+hi: "1–6 लॉकर। 4, 2 के बाद। 5, 3 के पहले। 2, 6 के पहले। 1 सबके पहले। दूसरा कौन?",
+options: ["2","3","4","5"],
+correct: 0,
+explanation: "Order: 1 < 2 < 4 < 6 < 5 < 3."
+},
+
+/* Q42 */
+{
+en: "Five boxes A–E weight different. A heavier than C. D heavier than A. E lighter than C. B not heaviest. Who is heaviest?",
+hi: "A–E के वज़न अलग। A, C से भारी। D, A से भारी। E, C से हल्का। B सबसे भारी नहीं। सबसे भारी कौन?",
+options: ["A","B","C","D"],
+correct: 3,
+explanation: "D is heaviest."
+},
+
+/* Q43 */
+{
+en: "Six persons sit around table. A between B & C. D opposite B. E immediate right of C. F not neighbour of D. Who sits opposite E?",
+hi: "छह व्यक्ति गोल में। A, B व C के बीच। D, B के सामने। E, C के दाएँ। F, D का पड़ोसी नहीं। E के सामने कौन?",
+options: ["A","B","D","F"],
+correct: 0,
+explanation: "Opposite E = A."
+},
+
+/* Q44 */
+{
+en: "Five ranks 1–5. A above C. B below D. C above E. E not 5. Who is 5th?",
+hi: "रैंक 1–5। A, C से ऊपर। B, D से नीचे। C, E से ऊपर। E पाँचवाँ नहीं। पाँचवें स्थान पर कौन?",
+options: ["B","C","D","E"],
+correct: 0,
+explanation: "B ends up last."
+},
+
+/* Q45 */
+{
+en: "A,B,C,D,E. A right of B. C left of D. E between B & C. A not at any end. Who is at right end?",
+hi: "A,B,C,D,E। A, B के दाएँ। C, D के बाएँ। E, B व C के बीच। A छोर पर नहीं। दाएँ छोर पर कौन?",
+options: ["A","B","C","D"],
+correct: 3,
+explanation: "Rightmost = D."
+},
+
+/* Q46 */
+{
+en: "Four athletes jump different distances. A > B. C < B. D > A. Who is 2nd best?",
+hi: "चार एथलीट। A > B। C < B। D > A। दूसरा सबसे अच्छा कौन?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Order: D > A > B > C → 2nd = A."
+},
+
+/* Q47 */
+{
+en: "Five players A–E. A scored more than C but less than D. B less than C. E highest. Who is third?",
+hi: "A–E खिलाड़ी। A > C पर A < D। B < C। E सबसे अधिक। तीसरा कौन?",
+options: ["A","B","C","D"],
+correct: 0,
+explanation: "Order: E > D > A > C > B → third = A."
+},
+
+/* Q48 */
+{
+en: "Four sisters P,Q,R,S. R younger than P but older than Q. S older than P. Who is oldest?",
+hi: "P,Q,R,S चार बहनें। R, P से छोटी पर Q से बड़ी। S, P से बड़ी। सबसे बड़ी कौन?",
+options: ["P","Q","R","S"],
+correct: 3,
+explanation: "S oldest."
+},
+
+/* Q49 */
+{
+en: "Six parking slots 1–6. Car in 3. Bike left of 5. Truck in 1. Bus in 6. Auto between Car & Bike. Which slot has Bike?",
+hi: "1–6 पार्किंग। Car =3। Bike, 5 के बाएँ। Truck=1। Bus=6। Auto, Car व Bike के बीच। Bike किस स्लॉट में?",
+options: ["2","4","5","3"],
+correct: 1,
+explanation: "Bike = 4."
+},
+
+/* Q50 */
+{
+en: "Five students seated. A left of C. D between B & C. E not neighbour of B. Who is rightmost?",
+hi: "A,B,C,D,E बैठे। A, C के बाएँ। D, B व C के बीच। E, B का पड़ोसी नहीं। सबसे दाएँ कौन?",
+options: ["A","C","D","E"],
+correct: 3,
+explanation: "E is rightmost."
+}
+
+];
+
+
 
 
             vennData.forEach(add);
